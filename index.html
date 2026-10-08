@@ -101,6 +101,7 @@
   <button class="tab active" data-tab="topics">🌍 Viral Topics <span class="n" id="nTop">0</span></button>
 </div>
 
+<div class="niches" id="filterRow" style="display:none"><span class="lbl">⚙️ Filters:</span></div>
 <div class="niches" id="countryRow" style="display:none"><span class="lbl">🌍 Country:</span></div>
 <div class="niches" id="topicNicheRow" style="display:none"><span class="lbl">⧩ Niche:</span></div>
 
@@ -128,6 +129,8 @@
     <label>Notes</label><textarea id="f_notes" rows="2" placeholder="e.g. 2:02, 1.2M likes, 19.9K comments — massively viral"></textarea>
     <label>Video 1 URL (optional)</label><input id="f_v1">
     <label>Video 2 URL (optional)</label><input id="f_v2">
+    <label>Days to monetize (e.g. 21) — account se criteria tak kitne din lage</label><input id="f_days" type="number" min="1" placeholder="e.g. 21">
+    <label><input type="checkbox" id="f_ver" style="width:auto"> ✓ Blue tick (verified) account hai</label>
     <label><input type="checkbox" id="f_rew" checked style="width:auto"> Rewards Eligible</label>
     <div class="row">
       <button class="btn btn-profile" id="saveBtn">Save</button>
@@ -141,6 +144,7 @@
 <script>
 const $=id=>document.getElementById(id);
 let accounts=[], candidates=[], tab='topics', nicheFilter='All', query='';
+let fastOnly=true, noBlueTick=true;
 let topics=[], topicCountry='DE', topicsCache={};
 let topicNicheFilter='All';
 const COUNTRIES=[['DE','🇩🇪 Germany'],['US','🇺🇸 USA'],['GB','🇬🇧 UK'],['PK','🇵🇰 Pakistan']];
@@ -180,7 +184,7 @@ async function api(p,o){
   if(p==='/api/accounts'&&method==='POST'){
     const h=(body.handle||'').trim();if(!h)throw new Error('handle required');
     if(DB.accounts.some(a=>a.handle.toLowerCase()===h.toLowerCase()))throw new Error('ye handle pehle se hai');
-    DB.accounts.unshift({handle:h,niche:body.niche||'Other',followers:body.followers||null,rewards_eligible:!!body.rewards_eligible,notes:body.notes||'',video1_url:body.video1_url||null,video2_url:body.video2_url||null,date_added:new Date().toISOString().slice(0,10),source:'manual'});
+    DB.accounts.unshift({handle:h,niche:body.niche||'Other',followers:body.followers||null,rewards_eligible:!!body.rewards_eligible,days_to_monetized:(body.days_to_monetized==null?null:body.days_to_monetized),verified:!!body.verified,notes:body.notes||'',video1_url:body.video1_url||null,video2_url:body.video2_url||null,date_added:new Date().toISOString().slice(0,10),source:'manual'});
     saveDB();return{ok:true};
   }
   if(p==='/api/candidates/approve'&&method==='POST'){
@@ -211,8 +215,21 @@ async function load(){
 function filteredAccounts(){
   return accounts.filter(a=>{
     if(nicheFilter!=='All'&&a.niche!==nicheFilter)return false;
+    if(fastOnly&&(a.days_to_monetized==null||a.days_to_monetized>30))return false;
+    if(noBlueTick&&a.verified)return false;
     if(query){const q=query.toLowerCase();const hay=(a.handle+' '+(a.niche||'')+' '+(a.notes||'')).toLowerCase();if(!hay.includes(q))return false;}
     return true;
+  });
+}
+function renderFilters(){
+  const box=$('filterRow');box.innerHTML='<span class="lbl">⚙️ Filters:</span>';
+  [['fast','⚡ 30 din me monetize',fastOnly,'fastOnly'],
+   ['blue','🚫 Blue tick nahi',noBlueTick,'noBlueTick']].forEach(([k,label,on,varName])=>{
+    const b=document.createElement('button');
+    b.className='pill'+(on?' active':'');
+    b.textContent=label;
+    b.onclick=()=>{if(varName==='fastOnly')fastOnly=!fastOnly;else noBlueTick=!noBlueTick;render();};
+    box.appendChild(b);
   });
 }
 function renderNiches(){
@@ -304,6 +321,8 @@ function cardHTML(a,isCand){
     <div class="meta">
       <div class="metachip">👥 <span class="lab">Followers:</span> ${esc(a.followers||'—')}</div>
       ${a.rewards_eligible?'<div class="metachip rewards">✨ Rewards Eligible</div>':''}
+      ${a.days_to_monetized!=null?`<div class="metachip">⚡ <span class="lab">${a.days_to_monetized} din</span>&nbsp;me monetize</div>`:''}
+      ${a.verified?'<div class="metachip">✓ Blue tick</div>':''}
     </div>
     ${a.notes?`<div class="notes">📝 ${esc(a.notes)}</div>`:''}
     <div class="btns">
@@ -315,16 +334,18 @@ function render(){
   $('nTop').textContent=topics.length;
   $('count').textContent=tab==='accounts'?accounts.length:(tab==='candidates'?candidates.length:topics.length);
   const isTopics=tab==='topics';
-  $('niches').style.display=isTopics?'none':'flex';
+  const isAcc=tab==='accounts';
+  $('niches').style.display=isAcc?'flex':'none';
+  $('filterRow').style.display=isAcc?'flex':'none';
   $('countryRow').style.display=isTopics?'flex':'none';
   $('topicNicheRow').style.display=isTopics?'flex':'none';
-  if(!isTopics)renderNiches();else{renderCountries();renderTopicNiches();}
+  if(isAcc){renderNiches();renderFilters();}else if(!isTopics)renderNiches();else{renderCountries();renderTopicNiches();}
   const grid=$('grid');
   if(tab==='accounts'){
     $('sectTitle').innerHTML=`📈 Viral Accounts (${filteredAccounts().length})`;
     $('sectSub').textContent='Latest Day Only';
     const list=filteredAccounts();
-    grid.innerHTML=list.length?list.map(a=>cardHTML(a,false)).join(''):`<div class="empty">Koi account nahi mila. ＋ se add karo ya 🤖 se auto-detect chalao.</div>`;
+    grid.innerHTML=list.length?list.map(a=>cardHTML(a,false)).join(''):`<div class="empty">Koi account filter par poora nahi utra.<br>＋ se add karte waqt "days to monetize" zaroor likho, ya ⚙️ filters off kar ke dekho.</div>`;
   }else if(tab==='candidates'){
     $('sectTitle').innerHTML=`🤖 Auto-detected Candidates (${candidates.length})`;
     $('sectSub').textContent='Review karke approve karo';
@@ -349,13 +370,16 @@ $('addBtn').onclick=()=>$('modal').classList.add('open');
 $('cancelBtn').onclick=()=>$('modal').classList.remove('open');
 $('saveBtn').onclick=async()=>{
   const h=$('f_handle').value.trim();if(!h){toast('Handle likho');return;}
+  const daysRaw=parseInt($('f_days').value,10);
   await api('/api/accounts',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
     handle:h.startsWith('@')?h:'@'+h, niche:$('f_niche').value.trim()||'Other',
     followers:$('f_followers').value.trim()||null, notes:$('f_notes').value.trim(),
     video1_url:$('f_v1').value.trim()||null, video2_url:$('f_v2').value.trim()||null,
+    days_to_monetized:isNaN(daysRaw)?null:daysRaw, verified:$('f_ver').checked,
     rewards_eligible:$('f_rew').checked})});
   $('modal').classList.remove('open');
-  ['f_handle','f_niche','f_followers','f_notes','f_v1','f_v2'].forEach(i=>$(i).value='');
+  ['f_handle','f_niche','f_followers','f_notes','f_v1','f_v2','f_days'].forEach(i=>$(i).value='');
+  $('f_ver').checked=false;
   toast('Account add ho gaya');load();
 };
 function tick(){const d=new Date();$('date').textContent=d.toISOString().slice(0,10);$('clock').textContent=String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');}
