@@ -2,15 +2,6 @@
   "date": "2026-10-08",
   "topics": [
     {
-      "title": "British consulate in Jerusalem to become 'UK Mission' as diplomats leave",
-      "source": "Sky News",
-      "link": "https://news.google.com/rss/articles/CBMi9AFBVV95cUxNcVdtbW01ckhTS2lsNEVMS1AzY2NzYUpnSzIteFhmUTJsb0Y2Mmx3MTNNVHFFbU9UdUNScnJyNEhMVWVRM3g2SEd5S2dXenZCQi15dHdyR01kbExWTjV2MHAxc2xsVXlQUWVKM2pMYmVMV1g4c3Y2cThpTmpYVGptSmRwNURMbndRTTRESFgwZFktZG9YQkNEZmpWTjNQMEV5WGRhU2hrX21aWTJIZ2ZRVEJFeDV4MWNrQ0VoU3A3UXlyQU1NZmdFSF8zaDhmVVNRNEV5V2EtRFVhRGZFaFZFdXBnSlBFMGUxMkJEVXhSZHhSTFZm?oc=5",
-      "niche": "Other",
-      "copyright": "medium",
-      "copyright_note": "Source material ka license check karo",
-      "country": "GB"
-    },
-    {
       "title": "Royal Navy service member charged with spying for a foreign power",
       "source": "BBC",
       "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE44QWJ3bnJISkVXVm45dmNYLXZOYnBoVnZIOEhqTTdqbmgweGVKR2pldUw4WkNHcEV1M1JfaDFjcnI0ZGhhY01QSTI4VEMtRHl0SjVHTU5uMmNmY3ZrbUE?oc=5",
@@ -26,6 +17,15 @@
       "niche": "News/Current affairs",
       "copyright": "medium",
       "copyright_note": "Footage reuse nahi — apni reporting/voiceover banao",
+      "country": "GB"
+    },
+    {
+      "title": "British consulate in Jerusalem to become 'UK Mission' as diplomats leave",
+      "source": "Sky News",
+      "link": "https://news.google.com/rss/articles/CBMi9AFBVV95cUxNcVdtbW01ckhTS2lsNEVMS1AzY2NzYUpnSzIteFhmUTJsb0Y2Mmx3MTNNVHFFbU9UdUNScnJyNEhMVWVRM3g2SEd5S2dXenZCQi15dHdyR01kbExWTjV2MHAxc2xsVXlQUWVKM2pMYmVMV1g4c3Y2cThpTmpYVGptSmRwNURMbndRTTRESFgwZFktZG9YQkNEZmpWTjNQMEV5WGRhU2hrX21aWTJIZ2ZRVEJFeDV4MWNrQ0VoU3A3UXlyQU1NZmdFSF8zaDhmVVNRNEV5V2EtRFVhRGZFaFZFdXBnSlBFMGUxMkJEVXhSZHhSTFZm?oc=5",
+      "niche": "Other",
+      "copyright": "medium",
+      "copyright_note": "Source material ka license check karo",
       "country": "GB"
     },
     {
@@ -112,7 +112,7 @@
     {
       "title": "How boxing inspired a play about men's mental health",
       "source": "BBC",
-      "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFBieUVNUnlHRDh1YUJwRmhQSkFsdk5VQ0Jnb1phWWVRVmc4VXNGa0htTy0wMEJuMlVwaGhqbDJDZ2Z4ZmdhNXVYalp6c1RqVVFmZzRMNldGMFFpbjQ?oc=5",
+      "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTFB0SkVob1ZYbzNIZzBfbzQzYjFiMDhRS1FfbkpZb1NITkZCMkw4NW4tUndlY042SVo4a3pMdkh1N2RjYm90MWVUbnFCU0I2ZFBFSldrbEdjZHVEUUxZclE?oc=5",
       "niche": "Health/Fitness",
       "copyright": "low",
       "copyright_note": "Apni voiceover + stock visuals safe hain",
@@ -121,19 +121,10 @@
     {
       "title": "Self-service health check machine in Essex workplaces refers to GPs",
       "source": "BBC",
-      "link": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE40UWNTTFk0Tm1WUHRTWk5PclhpSXN3bFdGQ1FtSmhXTnZ6eE1yYTRuMEdLOGdxeDZGeTdiZ1YyMXRMMzJSbXBtLWlfUXlWRUpnVmdVV3VldzVxSUpfaWc?oc=5",
+      "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE9Qd211NHVMRXF1NVBrU1dlYzlhclF5Zk5neDNBMVU4ZlhWdWNuMmxxS1dJSkhGQzNmOTNiaTNUc0FmanhEQXpuTzZjRW5KVVkzejAzZ2t0VGQ3R1k?oc=5",
       "niche": "Health/Fitness",
       "copyright": "low",
       "copyright_note": "Apni voiceover + stock visuals safe hain",
-      "country": "GB"
-    },
-    {
-      "title": "Covid, Brexit and Liz Truss mini-budget led to lasting decline in mental health, study finds",
-      "source": "The Guardian",
-      "link": "https://news.google.com/rss/articles/CBMivgFBVV95cUxOZGI5RnBjRERYNURMUkhjTnVWVGE5RTllLWZFTGJJZzBsN29HYzlpOUMtcUt6Q2YyT1lkRFlhenVFUDgxRUROSXBTNUM4NWZNZjZJcFNhOS1nOXVXSjJCZlotbnhINnJ5MVJTZC04Skk5TTFJOVhpcFVxWUFUWW1faHgtMG1wd01fb1I4enZnZTdpMVh4TktFalBfbGVoaTgyWm5ac2JYQWxzU09PLVNwMEkycWNGaGpZcHpRc0NB?oc=5",
-      "niche": "Finance/money",
-      "copyright": "low",
-      "copyright_note": "Apni commentary / screen recording safe hai",
       "country": "GB"
     },
     {
@@ -218,6 +209,15 @@
       "country": "GB"
     },
     {
+      "title": "Stock Market Today: Dow set for 500-point drop, S&P 500 and Nasdaq to decline as oil prices jump on threat of war resuming in Iran",
+      "source": "MarketWatch",
+      "link": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxOaHVVTnVzWW5SdEp1QVpGdUVLcnVVeXVHSHFscmR2OXh3MUEyYmNVaS1NU3dHTXFyVnFSaE5udjJDM0ZTR2dQaU1XV3YtYVRIcThVejZua3VqRVRjTXhrcXkxWHJlTUVQWEFxd2lUa0c2V25FcGxlbHRaRTJHTXVGam1Pa3ZCUWZFYUVWaTljNFRyVWdZVDV5YlJIT29TYWtmOEFORHFDRGpqZjBBRXdsZVZHcWVqNWpYRm9mQ2lma1k1YVE?oc=5",
+      "niche": "Finance/money",
+      "copyright": "low",
+      "copyright_note": "Apni commentary / screen recording safe hai",
+      "country": "GB"
+    },
+    {
       "title": "Real men don’t do climate change",
       "source": "Financial Times",
       "link": "https://news.google.com/rss/articles/CBMihAFBVV95cUxOMVU4Z2dlVVMwUzZfb2pUdXJfYVM5OGdfdWxQWmJOQzNjRzlxTlc0WmFTdnAyLWV3ZXoyNG9jV2NnZ21ZVkpDVmd1RS02djlUVnYxZWRHUC1GYlg4YXU2Q2k4NG9HeEF2MDZrZ2RCSXRjMUdhN0pHcl9mMHZsaWNxaU9YMGU?oc=5",
@@ -272,9 +272,9 @@
       "country": "GB"
     },
     {
-      "title": "Column | In old cookbooks, I’ve found magic and inspiration far beyond the recipes",
-      "source": "The Washington Post",
-      "link": "https://news.google.com/rss/articles/CBMinwFBVV95cUxNMHppa3RTNUZibkFhQnBLVWJEeDMxSEoyZkV5WlJQMFA4OFg1NjdkMTZWbFNyZ1JGWHljUUJKSlFWYllPeXp0SFNJRVhSQzFROUFIOTF2NUd0OTBoVnZRaWdZRE5aWVZRSmF1eUdzWjdrTlVhTE9WcU5OVkpGR2c3UGVCbVR1Y3NlOUpaeVh1Qm5scGhiLXQ3QVNqMDh2REU?oc=5",
+      "title": "These 21 recipe books will make you a better cook — the chefs’ picks",
+      "source": "The Times",
+      "link": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxQc0pRNUVlelROZkd1QUdCRmIwSWdsZERabm9SZ250VmQ3QUkyN0tyN0IzaUE2bUNqVlJnNlpFYTFudjNDOUZZaTRrWjgwZWhLUU9JM0hQc0g5VkdoY1UxeFdxb2loR3A0bG8wRmctNlFnbmVQeDZJVi14aDg1MjRLRi1wYmRldkJZeFNXTEZLQmpXU2FyNFlNLU9Kc2x2cU44VXpuakZiMXAxZw?oc=5",
       "niche": "Cooking/food",
       "copyright": "low",
       "copyright_note": "Khud ki video banao — 100% safe",
