@@ -81,6 +81,12 @@
   .topic-title{font-size:16px; font-weight:700; line-height:1.45; margin:12px 0 4px}
   .topic-src{font-size:12px; color:var(--mut); margin-bottom:10px}
   .crnote{font-size:12px; color:var(--mut); margin-top:8px; line-height:1.5}
+  .qacc{margin:10px 0 2px;border:1px solid rgba(255,215,0,.35);border-radius:10px;padding:8px 10px;background:rgba(255,215,0,.05)}
+  .qarow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:4px 0}
+  .qstar{font-size:15px}
+  .qh{font-weight:700;color:#ffd700;text-decoration:none}
+  .qmeta{font-size:12px;color:var(--grn)}
+  .qbtn{padding:4px 10px;font-size:12px}
 </style>
 </head>
 <body>
@@ -255,7 +261,7 @@ function renderNiches(){
     box.appendChild(b);
   });
   const dl=$('nicheList');dl.innerHTML='';
-  niches.slice(1).forEach(n=>{const o=document.createElement('option');o.value=n;dl.appendChild(o);});
+  [...new Set([...NICHE_TAXONOMY,...niches.slice(1)])].forEach(n=>{const o=document.createElement('option');o.value=n;dl.appendChild(o);});
 }
 function renderCountries(){
   const box=$('countryRow');box.innerHTML='<span class="lbl">🌍 Country:</span>';
@@ -282,6 +288,7 @@ function renderTopicNiches(){
 async function loadTopics(){
   renderCountries();
   const grid=$('grid');
+  if(!accounts.length){try{const d=await api('/api/data');accounts=d.accounts||[];}catch(e){}}
   if(topicsCache[topicCountry]){
     topics=topicsCache[topicCountry];render();return;
   }
@@ -293,18 +300,33 @@ async function loadTopics(){
   }catch(e){topics=[];toast('Trends fail: '+e.message);}
   render();
 }
+const NICHE_TAXONOMY=["Police bodycam compilations","AI adventure narration (docu-style series)","AI meme/brainrot edited videos","History","True crime","Reddit stories","Mindset/motivation","Crypto","Finance/money","AI movie/trailer edits","Gaming","Cam footage","Ranking/Top 10","Scandals/Drama","Automation/Faceless","Islamic","Lifestyle","Nature/wildlife","Sports highlights","DIY/crafts","Cooking/food","Tech/AI news","Space","Science","Health/Fitness","Environment/Climate","Entertainment/Celebrity","Travel/Tourism","Education","Real Estate","Automotive","Jobs/Career","Energy","News/Current affairs"];
 function topicCardHTML(t){
   const nc=nicheColor(t.niche||'Other');
   const [crTxt,crCls]=CR_LABEL[t.copyright]||CR_LABEL.medium;
   const tq=encodeURIComponent((t.title||t.niche||'').split(' ').slice(0,8).join(' '));
+  const qa=qualifiedForTopic(t);
+  const qaHTML=qa.length?`<div class="qacc">${qa.map(a=>`
+    <div class="qarow"><span class="qstar">⭐</span>
+      <a href="${esc(a.profile||('https://www.tiktok.com/'+a.handle))}" target="_blank" class="qh">${esc(a.handle)}</a>
+      <span class="qmeta">⚡ ${esc(String(a.days_to_monetized))} din me monetize</span>
+      ${a.v1?`<a class="btn btn-video qbtn" href="${esc(a.v1)}" target="_blank">🎬 Video</a>`:''}
+    </div>`).join('')}</div>`
+    :`<div class="btns"><a class="btn btn-video" href="https://www.tiktok.com/search/video?q=${tq}" target="_blank">🎵 TikTok Videos</a><a class="btn btn-video" href="https://www.tiktok.com/search/user?q=${tq}" target="_blank">👥 TikTok Channels</a></div>`;
   return `<div class="card">
     <div class="top"><div class="nbadge" style="color:${nc};border-color:${nc}">${esc(t.niche||'Other')}</div>
     <span class="cr ${crCls}" title="${esc(t.copyright_note||'')}">${crTxt}</span></div>
     <div class="topic-title">${esc(t.title)}</div>
     <div class="topic-src">📰 ${esc(t.source||'Google News')}</div>
     <div class="crnote">©️ ${esc(t.copyright_note||'')}</div>
-    <div class="btns">${t.link?`<a class="btn btn-video" href="${esc(t.link)}" target="_blank">↗ Open Story</a>`:''}<a class="btn btn-video" href="https://www.tiktok.com/search/video?q=${tq}" target="_blank">🎵 TikTok Videos</a><a class="btn btn-video" href="https://www.tiktok.com/search/user?q=${tq}" target="_blank">👥 TikTok Channels</a></div>
+    ${qaHTML}
+    ${t.link?`<div class="btns"><a class="btn btn-video" href="${esc(t.link)}" target="_blank">↗ Open Story</a></div>`:''}
   </div>`;
+}
+// TikTok criteria: 1 month me viral + monetize complete + no blue tick, niche match
+function qualifiedForTopic(t){
+  if(!t||!t.niche||t.niche==='Other')return[];
+  return accounts.filter(a=>a&&a.niche===t.niche&&a.days_to_monetized!=null&&+a.days_to_monetized<=30&&!a.verified).slice(0,2);
 }
 function filteredTopics(){
   const q=query.toLowerCase();
