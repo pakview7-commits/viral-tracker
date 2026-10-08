@@ -1,0 +1,24 @@
+name: Daily trends refresh
+on:
+  schedule:
+    - cron: '30 4 * * *'  # roz subah ~04:30 UTC
+  workflow_dispatch:      # manual run button
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Refresh trends
+        run: python3 update_trends.py
+      - name: Commit & push
+        run: |
+          git config user.name "trend-bot"
+          git config user.email "trend-bot@users.noreply.github.com"
+          git add data/trends_*.json
+          git diff --cached --quiet || git commit -m "daily trends refresh $(date -u +%F)"
+          git push
