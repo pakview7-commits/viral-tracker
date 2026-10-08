@@ -15,10 +15,14 @@ jobs:
           python-version: '3.12'
       - name: Refresh trends
         run: python3 update_trends.py
+      - name: Refresh YouTube gaps
+        env:
+          YT_API_KEY: ${{ secrets.YT_API_KEY }}
+        run: python3 youtube_gap.py || true
       - name: Commit & push
         run: |
           git config user.name "trend-bot"
           git config user.email "trend-bot@users.noreply.github.com"
-          git add data/trends_*.json
+          git add data/trends_*.json data/yt_gap_*.json
           git diff --cached --quiet || git commit -m "daily trends refresh $(date -u +%F)"
           git push
