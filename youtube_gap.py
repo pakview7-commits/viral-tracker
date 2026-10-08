@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
-"""YouTube -> TikTok Gap finder.
+"""YouTube -> TikTok Gap finder (SHORTS ONLY).
 
-Har region ke liye YouTube trending videos uthao, niche + FORMAT classify karo,
+Har region ke liye YouTube trending + last-30-days viral SHORTS uthao
+(duration <= 3 min), niche + FORMAT classify karo,
 phir TikTok par pehle se saturated formats se compare karke GAP nikalo:
   🟢 Niche gap   — ye niche TikTok par kam/saturated nahi
   🟡 Format gap  — niche TikTok par hai, lekin YE format naya hai
@@ -114,10 +115,36 @@ def channel_age_days(published_at):
         return None
 
 def build_region(key, region):
-    vids = yt_get(key, "/videos", {
+    """SHORTS ONLY: trending + last-30-days viral shorts search, duration <= 3 min."""
+    items_by_id = {}
+    # 1. trending videos
+    pop = yt_get(key, "/videos", {
         "part": "snippet,statistics,contentDetails",
         "chart": "mostPopular", "regionCode": region, "maxResults": 25,
     }).get("items", [])
+    for v in pop:
+        items_by_id[v["id"]] = v
+    time.sleep(0.3)
+    # 2. last 30 days ke viral SHORTS (search API)
+    since = (datetime.now(timezone.utc) - timedelta(days=30)).isoformat()
+    sres = yt_get(key, "/search", {
+        "part": "snippet", "q": "shorts", "type": "video",
+        "videoDuration": "short", "order": "viewCount",
+        "publishedAfter": since, "regionCode": region, "maxResults": 25,
+    }).get("items", [])
+    new_ids = [it["id"]["videoId"] for it in sres
+               if it.get("id", {}).get("videoId") not in items_by_id]
+    for i in range(0, len(new_ids), 50):
+        det = yt_get(key, "/videos", {
+            "part": "snippet,statistics,contentDetails",
+            "id": ",".join(new_ids[i:i + 50]), "maxResults": 50,
+        }).get("items", [])
+        for v in det:
+            items_by_id[v["id"]] = v
+        time.sleep(0.3)
+    # 3. SHORTS ONLY filter (YouTube Shorts <= 3 min)
+    vids = [v for v in items_by_id.values()
+            if parse_duration(v.get("contentDetails", {}).get("duration")) <= 185]
     # channel details (batch)
     ch_ids = list({v["snippet"]["channelId"] for v in vids})
     ch_info = {}
