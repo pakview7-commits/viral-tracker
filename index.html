@@ -412,8 +412,8 @@ function render(){
     const rg=YT_REGIONS.find(c=>c[0]===ytRegion);
     const q=query.toLowerCase();
     const list=q?ytItems.filter(it=>(it.title+' '+(it.niche||'')+' '+(it.format||'')).toLowerCase().includes(q)):ytItems;
-    $('sectTitle').innerHTML=`🎬 YouTube → TikTok Gaps — ${rg?rg[1]:ytRegion} (${list.length})`;
-    $('sectSub').textContent='Niche/format jo TikTok par naya lagta hai (heuristic)';
+    $('sectTitle').innerHTML=`🎬 YT Shorts → TikTok Gaps — ${rg?rg[1]:ytRegion} (${list.length})`;
+    $('sectSub').textContent='YouTube Shorts me viral — niche/format jo TikTok par naya lagta hai (heuristic)';
     grid.innerHTML=list.length?list.map(ytCardHTML).join(''):`<div class="empty">YouTube API key nahi lagi — key lagne ke baad roz gap data aayega.</div>`;
   }
 }
