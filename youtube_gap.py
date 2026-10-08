@@ -146,6 +146,39 @@ def latin_ok(title, region):
                     or "\u0400" <= ch <= "\u04ff")
     letters = sum(1 for ch in t if ch.isalpha())
     return not (letters and non_latin / letters > 0.3)
+
+# ---------- English-majority scoring (US/GB/DE) ----------
+EN_WORDS = {"the","and","with","for","new","best","top","official","trailer","challenge",
+ "funny","comedy","viral","video","videos","part","day","days","pov","how","why","what",
+ "this","that","your","you","epic","insane","crazy","try","trying","tested","review",
+ "unboxing","vs","versus","untold","documentary","explained","shocking","moments",
+ "compilation","highlights","song","songs","music","vlog","daily","life","hack","hacks",
+ "diy","recipe","cooking","food","game","gaming","gameplay","tech","ai","robot","space",
+ "science","history","money","rich","million","billion","dog","cat","baby","wedding",
+ "house","car","phone","movie","film","show","series","episode","season","star","love",
+ "emotional","family","gift","surprise","grandma","grandpa","mom","dad","kids"}
+HI_WORDS = {"bhai","bhaiya","gaya","gaye","gayi","gya","wala","wali","wale","padosan",
+ "padosi","bappa","ganpati","duniya","garib","dost","dosti","ghar","maa","papa","mummy",
+ "daddy","beta","beti","shaadi","dulhan","dulha","gussa","attitude","toda","todi",
+ "jalaa","jalaya","dunga","dungi","dunga","kiya","kya","kaise","kabhi","bahut","bohot",
+ "acha","accha","nahi","nahin","mera","meri","mere","tera","teri","tere","apna","apni",
+ "yeh","woh","aur","lekin","magar","toh","bhi","sab","sabse","zyada","chhota","bada",
+ "naya","nayi","purana","sundar","pyaar","mohabbat","dard","khushi","zindagi","waqt",
+ "din","raat","subah","shaam","paani","khana","tha","thi","hai","hain","thaa"}
+
+def lang_score(title):
+    # hashtags (#shorts #viral) sab lagate hain — sirf asal title text score karo
+    text = (title or "").split("#")[0]
+    words = set(re.findall(r"[a-z]+", text.lower()))
+    en = len(words & EN_WORDS)
+    hi = len(words & HI_WORDS)
+    return en - 2 * hi
+
+def lang_ok(title, region):
+    # PK: local mix, no filter. US/GB/DE: English majority (score >= 0, neutral ok)
+    if AUDIO_ALLOW.get(region) is None:
+        return True
+    return lang_score(title) >= 0
 def yt_get(key, path, params):
     params = dict(params); params["key"] = key
     url = API + path + "?" + urllib.parse.urlencode(params)
@@ -192,7 +225,7 @@ def build_region(key, region):
         sparams = {
             "part": "snippet", "q": q, "type": "video",
             "videoDuration": "short", "order": "viewCount",
-            "publishedAfter": since, "regionCode": region, "maxResults": 25,
+            "publishedAfter": since, "regionCode": region, "maxResults": 50,
         }
         if SEARCH_LANG.get(region):
             sparams["relevanceLanguage"] = SEARCH_LANG[region]
@@ -238,6 +271,8 @@ def build_region(key, region):
             continue  # US/GB/DE: sirf English (DE: +German) audio
         if not latin_ok(title, region):
             continue  # US/GB/DE: non-Latin script titles nahi
+        if not lang_ok(title, region):
+            continue  # US/GB/DE: English majority scoring
         ch = ch_info.get(sn.get("channelId"), {})
         ch_sn = ch.get("snippet", {})
         ch_st = ch.get("statistics", {})
