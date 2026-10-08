@@ -99,11 +99,13 @@
   <button class="tab" data-tab="accounts">📈 Viral Accounts <span class="n" id="nAcc">0</span></button>
   <button class="tab" data-tab="candidates">🤖 Candidates <span class="n" id="nCan">0</span></button>
   <button class="tab active" data-tab="topics">🌍 Viral Topics <span class="n" id="nTop">0</span></button>
+  <button class="tab" data-tab="ytgap">🎬 YT→TikTok Gap <span class="n" id="nYt">0</span></button>
 </div>
 
 <div class="niches" id="filterRow" style="display:none"><span class="lbl">⚙️ Filters:</span></div>
 <div class="niches" id="countryRow" style="display:none"><span class="lbl">🌍 Country:</span></div>
 <div class="niches" id="topicNicheRow" style="display:none"><span class="lbl">⧩ Niche:</span></div>
+<div class="niches" id="ytRegionRow" style="display:none"><span class="lbl">🌍 Region:</span></div>
 
 <div class="searchrow">
   <div class="search">🔍 <input id="q" placeholder="Search by handle, niche, or notes (e.g. @mindset, AI, RPM)..."></div>
@@ -147,6 +149,9 @@ let accounts=[], candidates=[], tab='topics', nicheFilter='All', query='';
 let fastOnly=true, noBlueTick=true;
 let topics=[], topicCountry='DE', topicsCache={};
 let topicNicheFilter='All';
+let ytItems=[], ytRegion='US', ytCache={};
+const YT_REGIONS=[['US','🇺🇸 USA'],['DE','🇩🇪 Germany'],['GB','🇬🇧 UK'],['PK','🇵🇰 Pakistan']];
+const GAP_CR={niche_gap:['🟢 Niche gap','low'],format_gap:['🟡 Format gap','medium'],saturated:['🔴 Saturated','high']};
 const COUNTRIES=[['DE','🇩🇪 Germany'],['US','🇺🇸 USA'],['GB','🇬🇧 UK'],['PK','🇵🇰 Pakistan']];
 const CR_LABEL={low:['🟢 Safe','low'],medium:['🟡 Careful','medium'],high:['🔴 Risky','high']};
 const NICHE_COLORS={};
@@ -180,6 +185,12 @@ async function api(p,o){
     const cc=p.split('=')[1];
     const r=await fetch('data/trends_'+cc+'.json');const d=await r.json();
     return{ok:true,cached:true,date:d.date,country:{},topics:d.topics||[],niches:d.niches||[]};
+  }
+  if(p.indexOf('/api/ytgap?region=')===0){
+    const rg=p.split('=')[1];
+    try{const r=await fetch('data/yt_gap_'+rg+'.json');const d=await r.json();
+      return{ok:true,date:d.date,region:d.region,items:d.items||[]};}
+    catch(e){return{ok:true,date:null,region:rg,items:[]};}
   }
   if(p==='/api/accounts'&&method==='POST'){
     const h=(body.handle||'').trim();if(!h)throw new Error('handle required');
@@ -330,17 +341,57 @@ function cardHTML(a,isCand){
       <a class="btn btn-profile" href="${prof}" target="_blank">↗ Profile</a>${v1}${v2}
     </div>${extra}${src}</div>`;
 }
+function renderYtRegions(){
+  const box=$('ytRegionRow');box.innerHTML='<span class="lbl">🌍 Region:</span>';
+  YT_REGIONS.forEach(([cc,label])=>{
+    const b=document.createElement('button');
+    b.className='pill'+(cc===ytRegion?' active':'');
+    b.textContent=label;
+    b.onclick=()=>{ytRegion=cc;loadYtGap();};
+    box.appendChild(b);
+  });
+}
+async function loadYtGap(){
+  renderYtRegions();
+  const grid=$('grid');
+  if(ytCache[ytRegion]){ytItems=ytCache[ytRegion];render();return;}
+  grid.innerHTML=`<div class="empty">⏳ ${ytRegion} ke YouTube gaps load ho rahe hain...</div>`;
+  try{
+    const d=await api('/api/ytgap?region='+ytRegion);
+    ytItems=(d.items||[]);ytCache[ytRegion]=ytItems;
+  }catch(e){ytItems=[];}
+  render();
+}
+function ytCardHTML(it){
+  const nc=nicheColor(it.niche||'Other');
+  const [gTxt,gCls]=GAP_CR[it.gap]||GAP_CR.saturated;
+  const badges=[];
+  if(it.viral_30d)badges.push('<div class="metachip">🔥 <span class="lab">30 din</span>&nbsp;me viral</div>');
+  if(it.new_channel)badges.push('<div class="metachip">⚡ New channel, fast viral</div>');
+  return `<div class="card">
+    <div class="top"><div class="nbadge" style="color:${nc};border-color:${nc}">${esc(it.niche||'Other')}</div>
+    <span class="nbadge" style="color:var(--cyan);border-color:var(--cyan)">🎬 ${esc(it.format||'')}</span>
+    <span class="cr ${gCls}" title="${esc(it.gap_note||'')}">${gTxt}</span></div>
+    <div class="topic-title">${esc(it.title)}</div>
+    <div class="topic-src">📺 ${esc(it.channel||'')} • 👁 ${esc(it.views_fmt||'')} views${it.published_days_ago!=null?` • ${it.published_days_ago}d ago`:''}</div>
+    <div class="meta">${badges.join('')}</div>
+    <div class="crnote">${esc(it.gap_note||'')}</div>
+    <div class="btns">${it.video_url?`<a class="btn btn-video" href="${esc(it.video_url)}" target="_blank">▶ YouTube Video</a>`:''}${it.channel_url?`<a class="btn btn-video" href="${esc(it.channel_url)}" target="_blank">👤 Channel</a>`:''}</div>
+  </div>`;
+}
 function render(){
   $('nAcc').textContent=accounts.length; $('nCan').textContent=candidates.length;
-  $('nTop').textContent=topics.length;
-  $('count').textContent=tab==='accounts'?accounts.length:(tab==='candidates'?candidates.length:topics.length);
+  $('nTop').textContent=topics.length; $('nYt').textContent=ytItems.length;
+  $('count').textContent=tab==='accounts'?accounts.length:(tab==='candidates'?candidates.length:(tab==='topics'?topics.length:ytItems.length));
   const isTopics=tab==='topics';
   const isAcc=tab==='accounts';
+  const isYt=tab==='ytgap';
   $('niches').style.display=isAcc?'flex':'none';
   $('filterRow').style.display=isAcc?'flex':'none';
   $('countryRow').style.display=isTopics?'flex':'none';
   $('topicNicheRow').style.display=isTopics?'flex':'none';
-  if(isAcc){renderNiches();renderFilters();}else if(!isTopics)renderNiches();else{renderCountries();renderTopicNiches();}
+  $('ytRegionRow').style.display=isYt?'flex':'none';
+  if(isAcc){renderNiches();renderFilters();}else if(isYt){renderYtRegions();}else if(!isTopics)renderNiches();else{renderCountries();renderTopicNiches();}
   const grid=$('grid');
   if(tab==='accounts'){
     $('sectTitle').innerHTML=`📈 Viral Accounts (${filteredAccounts().length})`;
@@ -351,19 +402,26 @@ function render(){
     $('sectTitle').innerHTML=`🤖 Auto-detected Candidates (${candidates.length})`;
     $('sectSub').textContent='Review karke approve karo';
     grid.innerHTML=candidates.length?candidates.map(a=>cardHTML(a,true)).join(''):`<div class="empty">Abhi koi candidate nahi. 🤖 dabao taake trending data se detect ho.</div>`;
-  }else{
+  }else if(tab==='topics'){
     const cc=COUNTRIES.find(c=>c[0]===topicCountry);
     $('sectTitle').innerHTML=`🌍 Viral Topics — ${cc?cc[1]:topicCountry} (${filteredTopics().length})`;
     $('sectSub').textContent='Daily auto-refresh • niche filter • ©️ safety rating';
     const list=filteredTopics();
     grid.innerHTML=list.length?list.map(topicCardHTML).join(''):`<div class="empty">⏳ Loading...</div>`;
+  }else{
+    const rg=YT_REGIONS.find(c=>c[0]===ytRegion);
+    const q=query.toLowerCase();
+    const list=q?ytItems.filter(it=>(it.title+' '+(it.niche||'')+' '+(it.format||'')).toLowerCase().includes(q)):ytItems;
+    $('sectTitle').innerHTML=`🎬 YouTube → TikTok Gaps — ${rg?rg[1]:ytRegion} (${list.length})`;
+    $('sectSub').textContent='Niche/format jo TikTok par naya lagta hai (heuristic)';
+    grid.innerHTML=list.length?list.map(ytCardHTML).join(''):`<div class="empty">YouTube API key nahi lagi — key lagne ke baad roz gap data aayega.</div>`;
   }
 }
 window.copyH=h=>{navigator.clipboard.writeText(h);toast('Copied '+h);};
 window.approve=async h=>{await api('/api/candidates/approve',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({handle:h})});toast('Approved '+h);load();};
 window.reject=async h=>{await api('/api/candidates/reject',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({handle:h})});toast('Rejected');load();};
 
-document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));t.classList.add('active');tab=t.dataset.tab;if(tab==='topics')loadTopics();else load();});
+document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));t.classList.add('active');tab=t.dataset.tab;if(tab==='topics')loadTopics();else if(tab==='ytgap')loadYtGap();else load();});
 $('q').oninput=e=>{query=e.target.value;render();};
 $('refreshBtn').onclick=()=>load();
 $('detectBtn').onclick=()=>toast('🤖 Daily auto-refresh GitHub backend par chalta hai — roz subah fresh data');
