@@ -73,6 +73,9 @@ TIKTOK_SATURATED = {
     "Gaming": ["Gaming playthrough", "Shorts / vertical clip"],
     "Cooking/food": ["Tutorial / how-to", "Shorts / vertical clip"],
     "News/Current affairs": ["Talking head / podcast", "Shorts / vertical clip"],
+    "Ranking/Top 10": ["Shorts / vertical clip", "Compilation"],
+    "Scandals/Drama": ["Shorts / vertical clip", "Talking head / podcast"],
+    "Cam footage": ["Compilation", "Shorts / vertical clip"],
 }
 
 def gap_assess(niche, fmt):
@@ -86,7 +89,19 @@ def gap_assess(niche, fmt):
     return ("format_gap", "🟡 Format gap",
             f"Niche TikTok par hai, lekin '{fmt}' format wahan naya lagta hai")
 
-# ---------- YouTube API ----------
+# ---------- content filters (amir's rules) ----------
+# Dance / adult content kabhi nahi; purane mega channels nahi (sirf rising stars)
+EXCLUDE_TITLE = ["dance", "dancing", "twerk", "nude", "naked", "porn",
+                 "onlyfans", "xxx", "brazzers"]
+MEGA_SUBS = 5_000_000      # is se zyada subs...
+MEGA_AGE_DAYS = 730        # ...aur 2 saal se purana channel = exclude
+
+def title_excluded(title):
+    t = (title or "").lower()
+    return any(k in t for k in EXCLUDE_TITLE)
+
+# region -> search language (US/UK/DE English majority, PK local mix)
+SEARCH_LANG = {"US": "en", "DE": "en", "GB": "en", "PK": None}
 def yt_get(key, path, params):
     params = dict(params); params["key"] = key
     url = API + path + "?" + urllib.parse.urlencode(params)
@@ -127,11 +142,14 @@ def build_region(key, region):
     time.sleep(0.3)
     # 2. last 30 days ke viral SHORTS (search API)
     since = (datetime.now(timezone.utc) - timedelta(days=30)).isoformat()
-    sres = yt_get(key, "/search", {
+    sparams = {
         "part": "snippet", "q": "shorts", "type": "video",
         "videoDuration": "short", "order": "viewCount",
         "publishedAfter": since, "regionCode": region, "maxResults": 25,
-    }).get("items", [])
+    }
+    if SEARCH_LANG.get(region):
+        sparams["relevanceLanguage"] = SEARCH_LANG[region]
+    sres = yt_get(key, "/search", sparams).get("items", [])
     new_ids = [it["id"]["videoId"] for it in sres
                if it.get("id", {}).get("videoId") not in items_by_id]
     for i in range(0, len(new_ids), 50):
@@ -161,8 +179,20 @@ def build_region(key, region):
     for v in vids:
         vid = v["id"]; sn = v["snippet"]; st = v.get("statistics", {})
         cd = v.get("contentDetails", {})
-        dur = parse_duration(cd.get("duration"))
         title = sn.get("title", "")
+        if title_excluded(title):
+            continue  # dance / adult content nahi
+        ch = ch_info.get(sn.get("channelId"), {})
+        ch_sn = ch.get("snippet", {})
+        ch_st = ch.get("statistics", {})
+        try:
+            subs = int(ch_st.get("subscriberCount") or 0)
+        except Exception:
+            subs = 0
+        ch_age = channel_age_days(ch_sn.get("publishedAt", ""))
+        if subs >= MEGA_SUBS and ch_age is not None and ch_age >= MEGA_AGE_DAYS:
+            continue  # purane mega channels nahi — sirf rising stars
+        dur = parse_duration(cd.get("duration"))
         desc = sn.get("description", "")[:500]
         niche = classify_niche(title + " " + desc)
         fmt = detect_format(title, desc, dur)
@@ -173,9 +203,6 @@ def build_region(key, region):
         except Exception:
             age_d = None
         views = int(st.get("viewCount") or 0)
-        ch = ch_info.get(sn.get("channelId"), {})
-        ch_sn = ch.get("snippet", {})
-        ch_age = channel_age_days(ch_sn.get("publishedAt", ""))
         viral_30d = age_d is not None and age_d <= 30 and views >= 500_000
         new_channel = ch_age is not None and ch_age <= 120 and views >= 200_000
         out.append({
@@ -189,13 +216,14 @@ def build_region(key, region):
             "niche": niche, "format": fmt,
             "gap": gap, "gap_label": gap_label, "gap_note": gap_note,
             "viral_30d": viral_30d, "new_channel": new_channel,
+            "subs": subs, "subs_fmt": fmt_views(subs), "channel_age_days": ch_age,
             "video_url": f"https://www.youtube.com/watch?v={vid}",
             "channel_url": f"https://www.youtube.com/channel/{sn.get('channelId','')}",
             "region": region,
         })
-    # gaps first, then by views
+    # gaps first, phir 30-din viral, phir views
     order = {"niche_gap": 0, "format_gap": 1, "saturated": 2}
-    out.sort(key=lambda x: (order[x["gap"]], -x["views"]))
+    out.sort(key=lambda x: (order[x["gap"]], not x["viral_30d"], -x["views"]))
     return out[:25]
 
 def main():
