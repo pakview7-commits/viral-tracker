@@ -119,6 +119,33 @@ def title_excluded(title):
 
 # region -> search language (US/UK/DE English majority, PK local mix)
 SEARCH_LANG = {"US": "en", "DE": "en", "GB": "en", "PK": None}
+# US/GB/DE: trending chart global hota hai -> sirf English search (viral-in-30d)
+# PK: local mix ke liye trending bhi rakho
+USE_TRENDING = {"US": False, "GB": False, "DE": False, "PK": True}
+SEARCH_QUERIES = {"US": ["shorts", "viral shorts"], "GB": ["shorts", "viral shorts"],
+                  "DE": ["shorts", "viral shorts"], "PK": ["shorts"]}
+# YouTube ki audio-language metadata se filter (US/GB: English, DE: German/English)
+AUDIO_ALLOW = {"US": ("en",), "GB": ("en",), "DE": ("de", "en"), "PK": None}
+
+def audio_ok(sn, region):
+    allow = AUDIO_ALLOW.get(region)
+    if not allow:
+        return True
+    lang = (sn.get("defaultAudioLanguage") or sn.get("defaultLanguage") or "")
+    lang = lang.lower().split("-")[0].split("_")[0]
+    if not lang:
+        return True  # unknown -> keep
+    return lang in allow
+
+def latin_ok(title, region):
+    if AUDIO_ALLOW.get(region) is None:
+        return True
+    t = title or ""
+    non_latin = sum(1 for ch in t if "\u0900" <= ch <= "\u097F" or "\u0600" <= ch <= "\u06FF"
+                    or "\u4e00" <= ch <= "\u9fff" or "\u0e00" <= ch <= "\u0e7f"
+                    or "\u0400" <= ch <= "\u04ff")
+    letters = sum(1 for ch in t if ch.isalpha())
+    return not (letters and non_latin / letters > 0.3)
 def yt_get(key, path, params):
     params = dict(params); params["key"] = key
     url = API + path + "?" + urllib.parse.urlencode(params)
@@ -147,35 +174,43 @@ def channel_age_days(published_at):
         return None
 
 def build_region(key, region):
-    """SHORTS ONLY: trending + last-30-days viral shorts search, duration <= 3 min."""
+    """SHORTS ONLY, viral-in-30-days. US/GB/DE: English-majority (search-based);
+    PK: local mix (trending + search). Duration <= 3 min."""
     items_by_id = {}
-    # 1. trending videos
-    pop = yt_get(key, "/videos", {
-        "part": "snippet,statistics,contentDetails",
-        "chart": "mostPopular", "regionCode": region, "maxResults": 25,
-    }).get("items", [])
-    for v in pop:
-        items_by_id[v["id"]] = v
-    time.sleep(0.3)
-    # 2. last 30 days ke viral SHORTS (search API)
-    since = (datetime.now(timezone.utc) - timedelta(days=30)).isoformat()
-    sparams = {
-        "part": "snippet", "q": "shorts", "type": "video",
-        "videoDuration": "short", "order": "viewCount",
-        "publishedAfter": since, "regionCode": region, "maxResults": 25,
-    }
-    if SEARCH_LANG.get(region):
-        sparams["relevanceLanguage"] = SEARCH_LANG[region]
-    sres = yt_get(key, "/search", sparams).get("items", [])
-    new_ids = [it["id"]["videoId"] for it in sres
-               if it.get("id", {}).get("videoId") not in items_by_id]
-    for i in range(0, len(new_ids), 50):
-        det = yt_get(key, "/videos", {
+    # 1. trending videos (sirf PK ke liye — US/GB/DE ka chart global hota hai)
+    if USE_TRENDING.get(region):
+        pop = yt_get(key, "/videos", {
             "part": "snippet,statistics,contentDetails",
-            "id": ",".join(new_ids[i:i + 50]), "maxResults": 50,
+            "chart": "mostPopular", "regionCode": region, "maxResults": 25,
         }).get("items", [])
-        for v in det:
+        for v in pop:
             items_by_id[v["id"]] = v
+        time.sleep(0.3)
+    # 2. last 30 days ke viral SHORTS (search API, region queries)
+    since = (datetime.now(timezone.utc) - timedelta(days=30)).isoformat()
+    for q in SEARCH_QUERIES.get(region, ["shorts"]):
+        sparams = {
+            "part": "snippet", "q": q, "type": "video",
+            "videoDuration": "short", "order": "viewCount",
+            "publishedAfter": since, "regionCode": region, "maxResults": 25,
+        }
+        if SEARCH_LANG.get(region):
+            sparams["relevanceLanguage"] = SEARCH_LANG[region]
+        try:
+            sres = yt_get(key, "/search", sparams).get("items", [])
+        except Exception as e:
+            print(f"[{region}] search '{q}' fail: {e}", flush=True)
+            continue
+        new_ids = [it["id"]["videoId"] for it in sres
+                   if it.get("id", {}).get("videoId") not in items_by_id]
+        for i in range(0, len(new_ids), 50):
+            det = yt_get(key, "/videos", {
+                "part": "snippet,statistics,contentDetails",
+                "id": ",".join(new_ids[i:i + 50]), "maxResults": 50,
+            }).get("items", [])
+            for v in det:
+                items_by_id[v["id"]] = v
+            time.sleep(0.3)
         time.sleep(0.3)
     # 3. SHORTS ONLY filter (YouTube Shorts <= 3 min)
     vids = [v for v in items_by_id.values()
@@ -199,6 +234,10 @@ def build_region(key, region):
         title = sn.get("title", "")
         if title_excluded(title):
             continue  # dance / adult content nahi
+        if not audio_ok(sn, region):
+            continue  # US/GB/DE: sirf English (DE: +German) audio
+        if not latin_ok(title, region):
+            continue  # US/GB/DE: non-Latin script titles nahi
         ch = ch_info.get(sn.get("channelId"), {})
         ch_sn = ch.get("snippet", {})
         ch_st = ch.get("statistics", {})
