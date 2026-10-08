@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Viral Accounts Tracker</title>
+<title>Amir Malik viral niches</title>
 <style>
   :root{
     --bg:#0b0b10; --card:#14141c; --card2:#1a1a24; --line:#262633;
@@ -86,7 +86,7 @@
 <body>
 
 <header>
-  <div class="logo"><div class="flame">🔥</div> Viral Accounts</div>
+  <div class="logo"><div class="flame">🔥</div> Amir Malik viral niches</div>
   <div class="spacer"></div>
   <div class="chip">📅 <span id="date">—</span></div>
   <div class="chip">🔥 <b id="count">0</b></div>
@@ -96,9 +96,9 @@
 </header>
 
 <div class="tabs">
-  <button class="tab active" data-tab="accounts">📈 Viral Accounts <span class="n" id="nAcc">0</span></button>
+  <button class="tab" data-tab="accounts">📈 Viral Accounts <span class="n" id="nAcc">0</span></button>
   <button class="tab" data-tab="candidates">🤖 Candidates <span class="n" id="nCan">0</span></button>
-  <button class="tab" data-tab="topics">🌍 Viral Topics <span class="n" id="nTop">0</span></button>
+  <button class="tab active" data-tab="topics">🌍 Viral Topics <span class="n" id="nTop">0</span></button>
 </div>
 
 <div class="niches" id="countryRow" style="display:none"><span class="lbl">🌍 Country:</span></div>
@@ -140,7 +140,7 @@
 
 <script>
 const $=id=>document.getElementById(id);
-let accounts=[], candidates=[], tab='accounts', nicheFilter='All', query='';
+let accounts=[], candidates=[], tab='topics', nicheFilter='All', query='';
 let topics=[], topicCountry='DE', topicsCache={};
 let topicNicheFilter='All';
 const COUNTRIES=[['DE','🇩🇪 Germany'],['US','🇺🇸 USA'],['GB','🇬🇧 UK'],['PK','🇵🇰 Pakistan']];
@@ -358,7 +358,7 @@ $('saveBtn').onclick=async()=>{
   toast('Account add ho gaya');load();
 };
 function tick(){const d=new Date();$('date').textContent=d.toISOString().slice(0,10);$('clock').textContent=String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');}
-tick();setInterval(tick,30000);load();
+tick();setInterval(tick,30000);if(tab==='topics')loadTopics();else load();
 </script>
 </body>
 </html>
