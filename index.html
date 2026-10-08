@@ -285,13 +285,14 @@ async function loadTopics(){
 function topicCardHTML(t){
   const nc=nicheColor(t.niche||'Other');
   const [crTxt,crCls]=CR_LABEL[t.copyright]||CR_LABEL.medium;
+  const tq=encodeURIComponent((t.title||t.niche||'').split(' ').slice(0,8).join(' '));
   return `<div class="card">
     <div class="top"><div class="nbadge" style="color:${nc};border-color:${nc}">${esc(t.niche||'Other')}</div>
     <span class="cr ${crCls}" title="${esc(t.copyright_note||'')}">${crTxt}</span></div>
     <div class="topic-title">${esc(t.title)}</div>
     <div class="topic-src">📰 ${esc(t.source||'Google News')}</div>
     <div class="crnote">©️ ${esc(t.copyright_note||'')}</div>
-    <div class="btns">${t.link?`<a class="btn btn-video" href="${esc(t.link)}" target="_blank">↗ Open Story</a>`:''}</div>
+    <div class="btns">${t.link?`<a class="btn btn-video" href="${esc(t.link)}" target="_blank">↗ Open Story</a>`:''}<a class="btn btn-video" href="https://www.tiktok.com/search/video?q=${tq}" target="_blank">🎵 TikTok Videos</a><a class="btn btn-video" href="https://www.tiktok.com/search/user?q=${tq}" target="_blank">👥 TikTok Channels</a></div>
   </div>`;
 }
 function filteredTopics(){
