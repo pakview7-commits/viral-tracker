@@ -76,7 +76,24 @@ TIKTOK_SATURATED = {
     "Ranking/Top 10": ["Shorts / vertical clip", "Compilation"],
     "Scandals/Drama": ["Shorts / vertical clip", "Talking head / podcast"],
     "Cam footage": ["Compilation", "Shorts / vertical clip"],
+    "Lifestyle": ["Shorts / vertical clip", "Vlog / day in life"],
 }
+
+# YouTube ki official category -> niche (keyword na mile to fallback)
+YT_CAT_TO_NICHE = {
+    "1": "Entertainment/Celebrity", "2": "Cars/Automotive",
+    "10": "Music/DJ", "15": "Pets/animals", "17": "Sports highlights",
+    "19": "Travel/Tourism", "20": "Gaming", "22": "Lifestyle",
+    "23": "Comedy", "24": "Entertainment/Celebrity",
+    "25": "News/Current affairs", "26": "Tutorial/DIY",
+    "27": "Education/Learning", "28": "Tech/AI news",
+}
+
+def classify_niche_smart(title, desc, category_id):
+    kw = classify_niche((title or "") + " " + (desc or ""))
+    if kw != "Other":
+        return kw
+    return YT_CAT_TO_NICHE.get(str(category_id or ""), "Other")
 
 def gap_assess(niche, fmt):
     sat = TIKTOK_SATURATED.get(niche)
@@ -194,7 +211,7 @@ def build_region(key, region):
             continue  # purane mega channels nahi — sirf rising stars
         dur = parse_duration(cd.get("duration"))
         desc = sn.get("description", "")[:500]
-        niche = classify_niche(title + " " + desc)
+        niche = classify_niche_smart(title, desc, sn.get("categoryId"))
         fmt = detect_format(title, desc, dur)
         gap, gap_label, gap_note = gap_assess(niche, fmt)
         try:
