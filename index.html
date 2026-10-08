@@ -285,6 +285,7 @@ function filteredTopics(){
     return true;
   });
 }
+function cardHTML(a,isCand){
   const nc=nicheColor(a.niche||'Other');
   const v1=a.video1_url?`<a class="btn btn-video" href="${esc(a.video1_url)}" target="_blank">▶ Video 1</a>`:`<span class="btn btn-video off">🎥 Video 1 —</span>`;
   const v2=a.video2_url?`<a class="btn btn-video" href="${esc(a.video2_url)}" target="_blank">🎥 Video 2</a>`:`<span class="btn btn-video off">🎥 Video 2 —</span>`;
