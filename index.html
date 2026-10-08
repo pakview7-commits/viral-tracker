@@ -66,7 +66,7 @@
   .addbtn{position:fixed; bottom:26px; right:26px; width:62px; height:62px; border-radius:50%; background:linear-gradient(135deg,#ff2d78,#c81e5b); border:none; color:#fff; font-size:30px; cursor:pointer; box-shadow:0 8px 24px rgba(255,45,120,.4)}
   .modal{display:none; position:fixed; inset:0; background:rgba(0,0,0,.7); z-index:50; align-items:center; justify-content:center}
   .modal.open{display:flex}
-  .mbox{background:var(--card); border:1px solid var(--line); border-radius:18px; padding:28px; width:min(480px,92vw)}
+  .mbox{background:var(--card); border:1px solid var(--line); border-radius:18px; padding:28px; width:min(480px,92vw); max-height:92vh; overflow-y:auto}
   .mbox h3{margin-bottom:16px}
   .mbox label{display:block; font-size:13px; color:var(--mut); margin:12px 0 5px}
   .mbox input,.mbox select,.mbox textarea{width:100%; background:var(--card2); border:1px solid var(--line); border-radius:10px; color:var(--txt); padding:10px 12px; font-size:14px; outline:none}
@@ -362,7 +362,7 @@ window.copyH=h=>{navigator.clipboard.writeText(h);toast('Copied '+h);};
 window.approve=async h=>{await api('/api/candidates/approve',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({handle:h})});toast('Approved '+h);load();};
 window.reject=async h=>{await api('/api/candidates/reject',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({handle:h})});toast('Rejected');load();};
 
-document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));t.classList.add('active');tab=t.dataset.tab;if(tab==='topics')loadTopics();else render();});
+document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));t.classList.add('active');tab=t.dataset.tab;if(tab==='topics')loadTopics();else load();});
 $('q').oninput=e=>{query=e.target.value;render();};
 $('refreshBtn').onclick=()=>load();
 $('detectBtn').onclick=()=>toast('🤖 Daily auto-refresh GitHub backend par chalta hai — roz subah fresh data');
