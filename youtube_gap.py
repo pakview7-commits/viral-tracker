@@ -164,7 +164,8 @@ HI_WORDS = {"bhai","bhaiya","gaya","gaye","gayi","gya","wala","wali","wale","pad
  "acha","accha","nahi","nahin","mera","meri","mere","tera","teri","tere","apna","apni",
  "yeh","woh","aur","lekin","magar","toh","bhi","sab","sabse","zyada","chhota","bada",
  "naya","nayi","purana","sundar","pyaar","mohabbat","dard","khushi","zindagi","waqt",
- "din","raat","subah","shaam","paani","khana","tha","thi","hai","hain","thaa"}
+ "din","raat","subah","shaam","paani","khana","tha","thi","hai","hain","thaa",
+ "mazdoor","dimag","kharab","diya","liye","josh","hosh","kho","gaye","wala"}
 
 def lang_score(title):
     # hashtags (#shorts #viral) sab lagate hain — sirf asal title text score karo
