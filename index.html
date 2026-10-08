@@ -373,7 +373,7 @@ function ytCardHTML(it){
     <span class="nbadge" style="color:var(--cyan);border-color:var(--cyan)">🎬 ${esc(it.format||'')}</span>
     <span class="cr ${gCls}" title="${esc(it.gap_note||'')}">${gTxt}</span></div>
     <div class="topic-title">${esc(it.title)}</div>
-    <div class="topic-src">📺 ${esc(it.channel||'')} • 👁 ${esc(it.views_fmt||'')} views${it.published_days_ago!=null?` • ${it.published_days_ago}d ago`:''}</div>
+    <div class="topic-src">📺 ${esc(it.channel||'')} • 👥 ${esc(it.subs_fmt||'—')} subs • 👁 ${esc(it.views_fmt||'')} views${it.published_days_ago!=null?` • ${it.published_days_ago}d ago`:''}</div>
     <div class="meta">${badges.join('')}</div>
     <div class="crnote">${esc(it.gap_note||'')}</div>
     <div class="btns">${it.video_url?`<a class="btn btn-video" href="${esc(it.video_url)}" target="_blank">▶ YouTube Video</a>`:''}${it.channel_url?`<a class="btn btn-video" href="${esc(it.channel_url)}" target="_blank">👤 Channel</a>`:''}</div>
