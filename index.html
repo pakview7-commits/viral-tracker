@@ -371,12 +371,14 @@ $('cancelBtn').onclick=()=>$('modal').classList.remove('open');
 $('saveBtn').onclick=async()=>{
   const h=$('f_handle').value.trim();if(!h){toast('Handle likho');return;}
   const daysRaw=parseInt($('f_days').value,10);
-  await api('/api/accounts',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
-    handle:h.startsWith('@')?h:'@'+h, niche:$('f_niche').value.trim()||'Other',
-    followers:$('f_followers').value.trim()||null, notes:$('f_notes').value.trim(),
-    video1_url:$('f_v1').value.trim()||null, video2_url:$('f_v2').value.trim()||null,
-    days_to_monetized:isNaN(daysRaw)?null:daysRaw, verified:$('f_ver').checked,
-    rewards_eligible:$('f_rew').checked})});
+  try{
+    await api('/api/accounts',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+      handle:h.startsWith('@')?h:'@'+h, niche:$('f_niche').value.trim()||'Other',
+      followers:$('f_followers').value.trim()||null, notes:$('f_notes').value.trim(),
+      video1_url:$('f_v1').value.trim()||null, video2_url:$('f_v2').value.trim()||null,
+      days_to_monetized:isNaN(daysRaw)?null:daysRaw, verified:$('f_ver').checked,
+      rewards_eligible:$('f_rew').checked})});
+  }catch(e){toast('Save nahi hua: '+e.message);return;}
   $('modal').classList.remove('open');
   ['f_handle','f_niche','f_followers','f_notes','f_v1','f_v2','f_days'].forEach(i=>$(i).value='');
   $('f_ver').checked=false;
