@@ -98,19 +98,16 @@
   <div class="chip">🔥 <b id="count">0</b></div>
   <div class="chip">🕐 <span id="clock">—</span></div>
   <button class="iconbtn" id="refreshBtn" title="Refresh">🔄</button>
-  <button class="iconbtn" id="detectBtn" title="Run auto-detect">🤖</button>
 </header>
 
 <div class="tabs">
   <button class="tab" data-tab="accounts">📈 Viral Accounts <span class="n" id="nAcc">0</span></button>
-  <button class="tab" data-tab="candidates">🤖 Candidates <span class="n" id="nCan">0</span></button>
-  <button class="tab active" data-tab="topics">🌍 Viral Topics <span class="n" id="nTop">0</span></button>
-  <button class="tab" data-tab="ytgap">🎬 YT→TikTok Gap <span class="n" id="nYt">0</span></button>
+  <button class="tab active" data-tab="tiktok">🔥 TikTok Finder <span class="n" id="nTk">0</span></button>
+  <button class="tab" data-tab="ytgap">🎬 YT Shorts Gap <span class="n" id="nYt">0</span></button>
 </div>
 
 <div class="niches" id="filterRow" style="display:none"><span class="lbl">⚙️ Filters:</span></div>
-<div class="niches" id="countryRow" style="display:none"><span class="lbl">🌍 Country:</span></div>
-<div class="niches" id="topicNicheRow" style="display:none"><span class="lbl">⧩ Niche:</span></div>
+<div class="niches" id="tkCountryRow" style="display:none"><span class="lbl">🌍 Country:</span></div>
 <div class="niches" id="ytRegionRow" style="display:none"><span class="lbl">🌍 Region:</span></div>
 
 <div class="searchrow">
@@ -140,6 +137,7 @@
     <label>Days to monetize (e.g. 21) — account se criteria tak kitne din lage</label><input id="f_days" type="number" min="1" placeholder="e.g. 21">
     <label><input type="checkbox" id="f_ver" style="width:auto"> ✓ Blue tick (verified) account hai</label>
     <label><input type="checkbox" id="f_rew" checked style="width:auto"> Rewards Eligible</label>
+    <label><input type="checkbox" id="f_views" style="width:auto"> 👁 Views completed (100K/30 din — monetization criteria poora)</label>
     <div class="row">
       <button class="btn btn-profile" id="saveBtn">Save</button>
       <button class="btn btn-video" id="cancelBtn">Cancel</button>
@@ -151,15 +149,17 @@
 
 <script>
 const $=id=>document.getElementById(id);
-let accounts=[], candidates=[], tab='topics', nicheFilter='All', query='';
+let accounts=[], tab='tiktok', nicheFilter='All', query='';
 let fastOnly=true, noBlueTick=true;
-let topics=[], topicCountry='DE', topicsCache={};
-let topicNicheFilter='All';
-let ytItems=[], ytRegion='US', ytCache={};
-const YT_REGIONS=[['US','🇺🇸 USA'],['DE','🇩🇪 Germany'],['GB','🇬🇧 UK'],['PK','🇵🇰 Pakistan']];
-const GAP_CR={niche_gap:['🟢 Niche gap','low'],format_gap:['🟡 Format gap','medium'],saturated:['🔴 Saturated','high']};
-const COUNTRIES=[['DE','🇩🇪 Germany'],['US','🇺🇸 USA'],['GB','🇬🇧 UK'],['PK','🇵🇰 Pakistan']];
+let ytItems=[], ytChannels=[], ytRegion='US', ytCache={}, ytView='videos';
+const YT_REGIONS=[['US','🇺🇸 USA'],['DE','🇩🇪 Germany'],['GB','🇬🇧 UK'],['FR','🇫🇷 France']];
+const GAP_CR={niche_gap:['🟢 Niche gap','low'],format_gap:['🟡 Format gap','medium']};
 const CR_LABEL={low:['🟢 Safe','low'],medium:['🟡 Careful','medium'],high:['🔴 Risky','high']};
+// TikTok Finder: country select → TikTok search query me country ka naam jorta hai
+const TK_COUNTRIES=[['USA','🇺🇸 USA'],['UK','🇬🇧 UK'],['Germany','🇩🇪 Germany'],['France','🇫🇷 France']];
+let tkCountry='USA';
+const NICHE_TAXONOMY=["Police bodycam compilations","AI adventure narration (docu-style series)","AI meme/brainrot edited videos","History","True crime","Reddit stories","Mindset/motivation","Crypto","Finance/money","AI movie/trailer edits","Gaming","Cam footage","Ranking/Top 10","Scandals/Drama","Automation/Faceless","Islamic","Lifestyle","AI storytime","Outdoor cooking","Royal family","American life","Rural life","Nature/wildlife","Sports highlights","DIY/crafts","Cooking/food","Tech/AI news","Space","Science","Health/Fitness","Environment/Climate","Entertainment/Celebrity","Travel/Tourism","Education","Real Estate","Automotive","Jobs/Career","Energy","News/Current affairs"];
+const FEATURED_NICHES=["AI adventure narration (docu-style series)","AI storytime","Outdoor cooking","Cam footage","Police bodycam compilations","Automotive","Royal family","History","American life","Rural life","Islamic","Ranking/Top 10"];
 const NICHE_COLORS={};
 function nicheColor(n){
   if(!NICHE_COLORS[n]){
@@ -177,43 +177,25 @@ function saveDB(){try{localStorage.setItem(DB_KEY,JSON.stringify(DB));}catch(e){
 let DB=null;
 async function ensureDB(){
   if(DB)return;
-  let sa=[],sc=[];
+  let sa=[];
   try{sa=await fetch('data/accounts.json').then(r=>r.json());}catch(e){}
-  try{sc=await fetch('data/candidates.json').then(r=>r.json());}catch(e){}
-  DB=getDB()||{accounts:sa,candidates:sc};
+  DB=getDB()||{accounts:sa};
 }
 async function api(p,o){
   await ensureDB();
   const method=(o&&o.method)||'GET';
   const body=o&&o.body?JSON.parse(o.body):{};
-  if(p==='/api/data')return{accounts:DB.accounts,candidates:DB.candidates};
-  if(p.indexOf('/api/trends?country=')===0){
-    const cc=p.split('=')[1];
-    const r=await fetch('data/trends_'+cc+'.json');const d=await r.json();
-    return{ok:true,cached:true,date:d.date,country:{},topics:d.topics||[],niches:d.niches||[]};
-  }
+  if(p==='/api/data')return{accounts:DB.accounts};
   if(p.indexOf('/api/ytgap?region=')===0){
     const rg=p.split('=')[1];
     try{const r=await fetch('data/yt_gap_'+rg+'.json');const d=await r.json();
-      return{ok:true,date:d.date,region:d.region,items:d.items||[]};}
-    catch(e){return{ok:true,date:null,region:rg,items:[]};}
+      return{ok:true,date:d.date,region:d.region,items:d.items||[],channels:d.channels||[]};}
+    catch(e){return{ok:true,date:null,region:rg,items:[],channels:[]};}
   }
   if(p==='/api/accounts'&&method==='POST'){
     const h=(body.handle||'').trim();if(!h)throw new Error('handle required');
     if(DB.accounts.some(a=>a.handle.toLowerCase()===h.toLowerCase()))throw new Error('ye handle pehle se hai');
-    DB.accounts.unshift({handle:h,niche:body.niche||'Other',followers:body.followers||null,rewards_eligible:!!body.rewards_eligible,days_to_monetized:(body.days_to_monetized==null?null:body.days_to_monetized),verified:!!body.verified,notes:body.notes||'',video1_url:body.video1_url||null,video2_url:body.video2_url||null,date_added:new Date().toISOString().slice(0,10),source:'manual'});
-    saveDB();return{ok:true};
-  }
-  if(p==='/api/candidates/approve'&&method==='POST'){
-    const h=(body.handle||'').toLowerCase();const i=DB.candidates.findIndex(c=>c.handle.toLowerCase()===h);
-    if(i<0)throw new Error('not found');const c=DB.candidates.splice(i,1)[0];
-    delete c.evidence;delete c.score;c.source='auto';
-    if(!DB.accounts.some(a=>a.handle.toLowerCase()===h))DB.accounts.unshift(c);
-    saveDB();return{ok:true};
-  }
-  if(p==='/api/candidates/reject'&&method==='POST'){
-    const h=(body.handle||'').toLowerCase();
-    DB.candidates=DB.candidates.filter(c=>c.handle.toLowerCase()!==h);
+    DB.accounts.unshift({handle:h,niche:body.niche||'Other',followers:body.followers||null,rewards_eligible:!!body.rewards_eligible,days_to_monetized:(body.days_to_monetized==null?null:body.days_to_monetized),verified:!!body.verified,views_completed:!!body.views_completed,notes:body.notes||'',video1_url:body.video1_url||null,video2_url:body.video2_url||null,date_added:new Date().toISOString().slice(0,10),source:'manual'});
     saveDB();return{ok:true};
   }
   throw new Error('static site me available nahi: '+p);
@@ -225,7 +207,7 @@ function esc(s){return (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>'
 async function load(){
   try{
     const d=await api('/api/data');
-    accounts=d.accounts||[]; candidates=d.candidates||[];
+    accounts=d.accounts||[];
   }catch(e){ toast('Server se data nahi mila'); }
   render();
 }
@@ -263,92 +245,67 @@ function renderNiches(){
   const dl=$('nicheList');dl.innerHTML='';
   [...new Set([...NICHE_TAXONOMY,...niches.slice(1)])].forEach(n=>{const o=document.createElement('option');o.value=n;dl.appendChild(o);});
 }
-function renderCountries(){
-  const box=$('countryRow');box.innerHTML='<span class="lbl">🌍 Country:</span>';
-  COUNTRIES.forEach(([cc,label])=>{
+// TikTok criteria: 1 month me viral + monetize complete + no blue tick + niche match
+// + close to 10k followers + views completed (amir ki requirement 2026-10-08)
+const NEAR10K_LO=8000, NEAR10K_HI=25000;
+function parseFollowers(v){
+  if(v==null)return null;
+  const m=String(v).trim().replace(/,/g,'').match(/^([\d.]+)\s*([kKmMbB]?)$/);
+  if(!m)return null;
+  let n=parseFloat(m[1]);if(isNaN(n))return null;
+  const s=m[2].toLowerCase();
+  if(s==='k')n*=1e3;else if(s==='m')n*=1e6;else if(s==='b')n*=1e9;
+  return n;
+}
+// TikTok criteria (amir): 1-2 month me grow hua account, no blue tick,
+// ~10k followers, views completed, halal only, kisi artist ka original nahi
+function qualifiedForNiche(niche){
+  if(!niche||niche==='Other')return[];
+  return accounts.filter(a=>{
+    if(!a||a.niche!==niche)return false;
+    if(a.days_to_monetized==null||+a.days_to_monetized>60)return false;
+    if(a.verified)return false;
+    const f=parseFollowers(a.followers);
+    if(f==null||f<NEAR10K_LO||f>NEAR10K_HI)return false;
+    if(!a.views_completed)return false;
+    return true;
+  }).slice(0,2);
+}
+function renderTkCountries(){
+  const box=$('tkCountryRow');box.innerHTML='<span class="lbl">🌍 Country:</span>';
+  TK_COUNTRIES.forEach(([cc,label])=>{
     const b=document.createElement('button');
-    b.className='pill'+(cc===topicCountry?' active':'');
+    b.className='pill'+(cc===tkCountry?' active':'');
     b.textContent=label;
-    b.onclick=()=>{topicCountry=cc;topicNicheFilter='All';loadTopics();};
+    b.onclick=()=>{tkCountry=cc;render();};
     box.appendChild(b);
   });
 }
-function renderTopicNiches(){
-  const box=$('topicNicheRow');box.innerHTML='<span class="lbl">⧩ Niche:</span>';
-  const niches=['All',...new Set(topics.map(t=>t.niche).filter(Boolean))];
-  niches.forEach(n=>{
-    const c=n==='All'?topics.length:topics.filter(t=>t.niche===n).length;
-    const b=document.createElement('button');
-    b.className='pill'+(n===topicNicheFilter?' active':'');
-    b.textContent=n+' ('+c+')';
-    b.onclick=()=>{topicNicheFilter=n;render();};
-    box.appendChild(b);
-  });
-}
-async function loadTopics(){
-  renderCountries();
-  const grid=$('grid');
-  if(!accounts.length){try{const d=await api('/api/data');accounts=d.accounts||[];}catch(e){}}
-  if(topicsCache[topicCountry]){
-    topics=topicsCache[topicCountry];render();return;
-  }
-  grid.innerHTML=`<div class="empty">⏳ ${topicCountry} ke viral topics load ho rahe hain...</div>`;
-  try{
-    const d=await api('/api/trends?country='+topicCountry);
-    topics=d.topics||[];topicsCache[topicCountry]=topics;
-    if(!d.ok)toast(d.message||'Trends nahi mile');
-  }catch(e){topics=[];toast('Trends fail: '+e.message);}
-  render();
-}
-const NICHE_TAXONOMY=["Police bodycam compilations","AI adventure narration (docu-style series)","AI meme/brainrot edited videos","History","True crime","Reddit stories","Mindset/motivation","Crypto","Finance/money","AI movie/trailer edits","Gaming","Cam footage","Ranking/Top 10","Scandals/Drama","Automation/Faceless","Islamic","Lifestyle","Nature/wildlife","Sports highlights","DIY/crafts","Cooking/food","Tech/AI news","Space","Science","Health/Fitness","Environment/Climate","Entertainment/Celebrity","Travel/Tourism","Education","Real Estate","Automotive","Jobs/Career","Energy","News/Current affairs"];
-function topicCardHTML(t){
-  const nc=nicheColor(t.niche||'Other');
-  const [crTxt,crCls]=CR_LABEL[t.copyright]||CR_LABEL.medium;
-  const tq=encodeURIComponent((t.title||t.niche||'').split(' ').slice(0,8).join(' '));
-  const qa=qualifiedForTopic(t);
+function tkNicheCardHTML(n){
+  const nc=nicheColor(n);
+  const q=encodeURIComponent(n+' '+tkCountry);
+  const qa=qualifiedForNiche(n);
   const qaHTML=qa.length?`<div class="qacc">${qa.map(a=>`
     <div class="qarow"><span class="qstar">⭐</span>
-      <a href="${esc(a.profile||('https://www.tiktok.com/'+a.handle))}" target="_blank" class="qh">${esc(a.handle)}</a>
-      <span class="qmeta">⚡ ${esc(String(a.days_to_monetized))} din me monetize</span>
-      ${a.v1?`<a class="btn btn-video qbtn" href="${esc(a.v1)}" target="_blank">🎬 Video</a>`:''}
-    </div>`).join('')}</div>`
-    :`<div class="btns"><a class="btn btn-video" href="https://www.tiktok.com/search/video?q=${tq}" target="_blank">🎵 TikTok Videos</a><a class="btn btn-video" href="https://www.tiktok.com/search/user?q=${tq}" target="_blank">👥 TikTok Channels</a></div>`;
+      <a href="${esc(a.profile||('https://www.tiktok.com/@'+encodeURIComponent((a.handle||'').replace(/^@/,''))))}" target="_blank" class="qh">${esc(a.handle)}</a>
+      <span class="qmeta">⚡ ${esc(String(a.days_to_monetized))} din • 👥 ${esc(a.followers||'')}</span>
+      ${a.video1_url?`<a class="btn btn-video qbtn" href="${esc(a.video1_url)}" target="_blank">🎬 Video</a>`:''}
+    </div>`).join('')}</div>`:'';
   return `<div class="card">
-    <div class="top"><div class="nbadge" style="color:${nc};border-color:${nc}">${esc(t.niche||'Other')}</div>
-    <span class="cr ${crCls}" title="${esc(t.copyright_note||'')}">${crTxt}</span></div>
-    <div class="topic-title">${esc(t.title)}</div>
-    <div class="topic-src">📰 ${esc(t.source||'Google News')}</div>
-    <div class="crnote">©️ ${esc(t.copyright_note||'')}</div>
+    <div class="top"><div class="nbadge" style="color:${nc};border-color:${nc}">${esc(n)}</div></div>
     ${qaHTML}
-    ${t.link?`<div class="btns"><a class="btn btn-video" href="${esc(t.link)}" target="_blank">↗ Open Story</a></div>`:''}
+    <div class="btns"><a class="btn btn-video" href="https://www.tiktok.com/search/video?q=${q}" target="_blank">🎵 Viral videos</a><a class="btn btn-video" href="https://www.tiktok.com/search/user?q=${q}" target="_blank">👥 Find accounts</a></div>
+    <div class="crnote">TikTok khud ${esc(tkCountry)} ke viral dikhayega — criteria check karke ＋ se add karo</div>
   </div>`;
 }
-// TikTok criteria: 1 month me viral + monetize complete + no blue tick, niche match
-function qualifiedForTopic(t){
-  if(!t||!t.niche||t.niche==='Other')return[];
-  return accounts.filter(a=>a&&a.niche===t.niche&&a.days_to_monetized!=null&&+a.days_to_monetized<=30&&!a.verified).slice(0,2);
-}
-function filteredTopics(){
-  const q=query.toLowerCase();
-  return topics.filter(t=>{
-    if(topicNicheFilter!=='All'&&t.niche!==topicNicheFilter)return false;
-    if(q&&(t.title+' '+(t.niche||'')).toLowerCase().indexOf(q)<0)return false;
-    return true;
-  });
-}
-function cardHTML(a,isCand){
+function cardHTML(a){
   const nc=nicheColor(a.niche||'Other');
   const v1=a.video1_url?`<a class="btn btn-video" href="${esc(a.video1_url)}" target="_blank">▶ Video 1</a>`:`<span class="btn btn-video off">🎥 Video 1 —</span>`;
   const v2=a.video2_url?`<a class="btn btn-video" href="${esc(a.video2_url)}" target="_blank">🎥 Video 2</a>`:`<span class="btn btn-video off">🎥 Video 2 —</span>`;
   const h=(a.handle||'').replace(/^@/,'');
   const prof=`https://www.tiktok.com/@${encodeURIComponent(h)}`;
-  let extra='';
-  if(isCand){
-    extra=`<div class="evidence">${(a.evidence||[]).map(e=>`<span class="ev">${esc(e)}</span>`).join('')}</div>
-    <div class="btns"><button class="btn btn-approve" onclick="approve('${esc(a.handle)}')">✓ Approve</button><button class="btn btn-reject" onclick="reject('${esc(a.handle)}')">✕ Reject</button></div>`;
-  }
   const src=a.source==='auto'?`<div class="src auto">🤖 auto-detected ${esc(a.date_added||'')}</div>`:`<div class="src">added ${esc(a.date_added||'')}</div>`;
-  return `<div class="card">${isCand?`<div class="score">★ ${a.score||0}</div>`:''}
+  return `<div class="card">
     <div class="top"><div class="handle">${esc(a.handle.length>12?a.handle.slice(0,12)+'…':a.handle)}</div>
     <div class="nbadge" style="color:${nc};border-color:${nc}">${esc(a.niche||'Other')}</div></div>
     <div class="copyrow"><button class="copybtn" onclick="copyH('${esc(a.handle)}')">📋 Copy</button></div>
@@ -356,12 +313,13 @@ function cardHTML(a,isCand){
       <div class="metachip">👥 <span class="lab">Followers:</span> ${esc(a.followers||'—')}</div>
       ${a.rewards_eligible?'<div class="metachip rewards">✨ Rewards Eligible</div>':''}
       ${a.days_to_monetized!=null?`<div class="metachip">⚡ <span class="lab">${a.days_to_monetized} din</span>&nbsp;me monetize</div>`:''}
+      ${a.views_completed?'<div class="metachip">👁 Views completed</div>':''}
       ${a.verified?'<div class="metachip">✓ Blue tick</div>':''}
     </div>
     ${a.notes?`<div class="notes">📝 ${esc(a.notes)}</div>`:''}
     <div class="btns">
       <a class="btn btn-profile" href="${prof}" target="_blank">↗ Profile</a>${v1}${v2}
-    </div>${extra}${src}</div>`;
+    </div>${src}</div>`;
 }
 function renderYtRegions(){
   const box=$('ytRegionRow');box.innerHTML='<span class="lbl">🌍 Region:</span>';
@@ -376,13 +334,28 @@ function renderYtRegions(){
 async function loadYtGap(){
   renderYtRegions();
   const grid=$('grid');
-  if(ytCache[ytRegion]){ytItems=ytCache[ytRegion];render();return;}
+  if(ytCache[ytRegion]){ytItems=ytCache[ytRegion].items;ytChannels=ytCache[ytRegion].channels;render();return;}
   grid.innerHTML=`<div class="empty">⏳ ${ytRegion} ke YouTube gaps load ho rahe hain...</div>`;
   try{
     const d=await api('/api/ytgap?region='+ytRegion);
-    ytItems=(d.items||[]);ytCache[ytRegion]=ytItems;
-  }catch(e){ytItems=[];}
+    // point 5: sirf TRUE gaps — saturated (pehle se TikTok par) nahi dikhana
+    ytItems=(d.items||[]).filter(i=>i.gap!=='saturated');
+    ytChannels=(d.channels||[]);
+    ytCache[ytRegion]={items:ytItems,channels:ytChannels};
+  }catch(e){ytItems=[];ytChannels=[];}
   render();
+}
+function ytChannelCardHTML(c){
+  const nc=nicheColor(c.niche||'Other');
+  const [gTxt,gCls]=GAP_CR[c.gap]||GAP_CR.niche_gap;
+  return `<div class="card">
+    <div class="top"><div class="nbadge" style="color:${nc};border-color:${nc}">${esc(c.niche||'Other')}</div>
+    <span class="cr ${gCls}">${gTxt}</span></div>
+    <div class="topic-title">${c.is_new?'🆕 ':''}${esc(c.channel||'')}</div>
+    <div class="topic-src">👥 ${esc(c.subs_fmt||'—')} subs • 📅 ${c.channel_age_days} din purana • 🎬 ${c.videos} shorts • 👁 ${esc(c.total_views_fmt||'')} views</div>
+    <div class="crnote">Top short: ${esc((c.top_video_title||'').slice(0,70))}</div>
+    <div class="btns">${c.channel_url?`<a class="btn btn-video" href="${esc(c.channel_url)}" target="_blank">👤 Channel</a>`:''}${c.top_video_url?`<a class="btn btn-video" href="${esc(c.top_video_url)}" target="_blank">▶ Top Short</a>`:''}</div>
+  </div>`;
 }
 function ytCardHTML(it){
   const nc=nicheColor(it.niche||'Other');
@@ -401,52 +374,56 @@ function ytCardHTML(it){
     <div class="btns">${it.video_url?`<a class="btn btn-video" href="${esc(it.video_url)}" target="_blank">▶ YouTube Video</a>`:''}${it.channel_url?`<a class="btn btn-video" href="${esc(it.channel_url)}" target="_blank">👤 Channel</a>`:''}</div>
   </div>`;
 }
+function tkNiches(){
+  const q=query.toLowerCase();
+  const all=[...FEATURED_NICHES, ...NICHE_TAXONOMY.filter(n=>!FEATURED_NICHES.includes(n))];
+  if(!q)return all;
+  return all.filter(n=>n.toLowerCase().includes(q));
+}
 function render(){
-  $('nAcc').textContent=accounts.length; $('nCan').textContent=candidates.length;
-  $('nTop').textContent=topics.length; $('nYt').textContent=ytItems.length;
-  $('count').textContent=tab==='accounts'?accounts.length:(tab==='candidates'?candidates.length:(tab==='topics'?topics.length:ytItems.length));
-  const isTopics=tab==='topics';
-  const isAcc=tab==='accounts';
-  const isYt=tab==='ytgap';
+  const tkList=tkNiches();
+  $('nAcc').textContent=accounts.length;
+  $('nTk').textContent=tkList.length;
+  $('nYt').textContent=ytView==='videos'?ytItems.length:ytChannels.length;
+  $('count').textContent=tab==='accounts'?filteredAccounts().length:(tab==='tiktok'?tkList.length:(ytView==='videos'?ytItems.length:ytChannels.length));
+  const isAcc=tab==='accounts', isTk=tab==='tiktok', isYt=tab==='ytgap';
   $('niches').style.display=isAcc?'flex':'none';
   $('filterRow').style.display=isAcc?'flex':'none';
-  $('countryRow').style.display=isTopics?'flex':'none';
-  $('topicNicheRow').style.display=isTopics?'flex':'none';
+  $('tkCountryRow').style.display=isTk?'flex':'none';
   $('ytRegionRow').style.display=isYt?'flex':'none';
-  if(isAcc){renderNiches();renderFilters();}else if(isYt){renderYtRegions();}else if(!isTopics)renderNiches();else{renderCountries();renderTopicNiches();}
+  if(isAcc){renderNiches();renderFilters();}else if(isTk){renderTkCountries();}else if(isYt){renderYtRegions();}
   const grid=$('grid');
   if(tab==='accounts'){
     $('sectTitle').innerHTML=`📈 Viral Accounts (${filteredAccounts().length})`;
-    $('sectSub').textContent='Latest Day Only';
+    $('sectSub').textContent='Criteria: 1-2 month grow • no blue tick • ~10k followers • views completed • halal';
     const list=filteredAccounts();
-    grid.innerHTML=list.length?list.map(a=>cardHTML(a,false)).join(''):`<div class="empty">Koi account filter par poora nahi utra.<br>＋ se add karte waqt "days to monetize" zaroor likho, ya ⚙️ filters off kar ke dekho.</div>`;
-  }else if(tab==='candidates'){
-    $('sectTitle').innerHTML=`🤖 Auto-detected Candidates (${candidates.length})`;
-    $('sectSub').textContent='Review karke approve karo';
-    grid.innerHTML=candidates.length?candidates.map(a=>cardHTML(a,true)).join(''):`<div class="empty">Abhi koi candidate nahi. 🤖 dabao taake trending data se detect ho.</div>`;
-  }else if(tab==='topics'){
-    const cc=COUNTRIES.find(c=>c[0]===topicCountry);
-    $('sectTitle').innerHTML=`🌍 Viral Topics — ${cc?cc[1]:topicCountry} (${filteredTopics().length})`;
-    $('sectSub').textContent='Daily auto-refresh • niche filter • ©️ safety rating';
-    const list=filteredTopics();
-    grid.innerHTML=list.length?list.map(topicCardHTML).join(''):`<div class="empty">⏳ Loading...</div>`;
+    grid.innerHTML=list.length?list.map(a=>cardHTML(a)).join(''):`<div class="empty">Koi account filter par poora nahi utra.<br>＋ se add karte waqt "days to monetize" zaroor likho, ya ⚙️ filters off kar ke dekho.</div>`;
+  }else if(tab==='tiktok'){
+    $('sectTitle').innerHTML=`🔥 TikTok Finder — ${tkCountry} (${tkList.length} niches)`;
+    $('sectSub').textContent='Criteria: 1-2 month purana • no blue tick • ~10k followers • views completed • halal only';
+    grid.innerHTML=`<div class="card" style="grid-column:1/-1"><div class="crnote" style="margin:0">⚠️ TikTok ka data koi API nahi deta — har niche par <b>one-click search</b> hai. TikTok khud viral dikhayega; criteria (pehli video ki date, blue tick) check karke <b>＋</b> se add karo — phir woh ⭐ ban kar yahin nazar aayega.</div></div>`+tkList.map(tkNicheCardHTML).join('');
   }else{
     const rg=YT_REGIONS.find(c=>c[0]===ytRegion);
     const q=query.toLowerCase();
-    const list=q?ytItems.filter(it=>(it.title+' '+(it.niche||'')+' '+(it.format||'')).toLowerCase().includes(q)):ytItems;
-    $('sectTitle').innerHTML=`🎬 YT Shorts → TikTok Gaps — ${rg?rg[1]:ytRegion} (${list.length})`;
-    $('sectSub').textContent='YouTube Shorts me viral — niche/format jo TikTok par naya lagta hai (heuristic)';
-    grid.innerHTML=list.length?list.map(ytCardHTML).join(''):`<div class="empty">YouTube API key nahi lagi — key lagne ke baad roz gap data aayega.</div>`;
+    const vids=q?ytItems.filter(it=>(it.title+' '+(it.niche||'')+' '+(it.format||'')).toLowerCase().includes(q)):ytItems;
+    const chs=q?ytChannels.filter(c=>(c.channel+' '+(c.niche||'')).toLowerCase().includes(q)):ytChannels;
+    const viewBtns=`<div class="niches" style="margin:0 0 6px"><button class="pill${ytView==='videos'?' active':''}" onclick="ytView='videos';render()">🎬 Shorts</button><button class="pill${ytView==='channels'?' active':''}" onclick="ytView='channels';render()">👥 New Accounts</button></div>`;
+    if(ytView==='channels'){
+      $('sectTitle').innerHTML=`🎬 YouTube New Accounts — ${rg?rg[1]:ytRegion} (${chs.length})`;
+      $('sectSub').textContent='90 din se naye channels • sirf TRUE gaps (TikTok par nahi hain) • halal';
+      grid.innerHTML=viewBtns+(chs.length?chs.map(ytChannelCardHTML).join(''):`<div class="empty">Is region me koi naya account nahi mila — kal phir check karo.</div>`);
+    }else{
+      $('sectTitle').innerHTML=`🎬 YT Shorts → TikTok Gaps — ${rg?rg[1]:ytRegion} (${vids.length})`;
+      $('sectSub').textContent='Sirf TRUE gaps — saturated (pehle se TikTok par) hataye gaye • halal';
+      grid.innerHTML=viewBtns+(vids.length?vids.map(ytCardHTML).join(''):`<div class="empty">Koi gap nahi mila.</div>`);
+    }
   }
 }
 window.copyH=h=>{navigator.clipboard.writeText(h);toast('Copied '+h);};
-window.approve=async h=>{await api('/api/candidates/approve',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({handle:h})});toast('Approved '+h);load();};
-window.reject=async h=>{await api('/api/candidates/reject',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({handle:h})});toast('Rejected');load();};
 
-document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));t.classList.add('active');tab=t.dataset.tab;if(tab==='topics')loadTopics();else if(tab==='ytgap')loadYtGap();else load();});
+document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));t.classList.add('active');tab=t.dataset.tab;if(tab==='ytgap')loadYtGap();else load();});
 $('q').oninput=e=>{query=e.target.value;render();};
 $('refreshBtn').onclick=()=>load();
-$('detectBtn').onclick=()=>toast('🤖 Daily auto-refresh GitHub backend par chalta hai — roz subah fresh data');
 $('addBtn').onclick=()=>$('modal').classList.add('open');
 $('cancelBtn').onclick=()=>$('modal').classList.remove('open');
 $('saveBtn').onclick=async()=>{
@@ -458,15 +435,16 @@ $('saveBtn').onclick=async()=>{
       followers:$('f_followers').value.trim()||null, notes:$('f_notes').value.trim(),
       video1_url:$('f_v1').value.trim()||null, video2_url:$('f_v2').value.trim()||null,
       days_to_monetized:isNaN(daysRaw)?null:daysRaw, verified:$('f_ver').checked,
+      views_completed:$('f_views').checked,
       rewards_eligible:$('f_rew').checked})});
   }catch(e){toast('Save nahi hua: '+e.message);return;}
   $('modal').classList.remove('open');
   ['f_handle','f_niche','f_followers','f_notes','f_v1','f_v2','f_days'].forEach(i=>$(i).value='');
-  $('f_ver').checked=false;
+  $('f_ver').checked=false;$('f_views').checked=false;
   toast('Account add ho gaya');load();
 };
 function tick(){const d=new Date();$('date').textContent=d.toISOString().slice(0,10);$('clock').textContent=String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');}
-tick();setInterval(tick,30000);if(tab==='topics')loadTopics();else load();
+tick();setInterval(tick,30000);load();
 </script>
 </body>
 </html>
