@@ -1,6 +1,33 @@
 {
-  "date": "2026-10-08",
+  "date": "2026-10-09",
   "topics": [
+    {
+      "title": "ICE officer shoots man in vehicle in Marble Hill, Manhattan",
+      "source": "WABC-TV New York",
+      "link": "https://news.google.com/rss/articles/CBMilAFBVV95cUxNeExQWE9QZ2tmZnFGcGFibF96SEJzaUVlMXZUaXhNcDZqckxPRF9xWmxGQmF0dU1tTUhpeXFOa1Z3MFRjUUJ1Y3dodlo3T1FkX1F0T2hFdU1XV09IMXYydTlHektWZjhzbFo3TmV1aFotdW95UGRhQ0VIVGY3bWlOOXM2QWJDZzUwYkFJT185UDFybG1o0gGaAUFVX3lxTE1IaUdiZDNsMnNwc2l3ZkNUUjkydTBFSjdmNmpZcGpUM1hxM0hyYVJ1UER0VkNPSTlRTEZwYU82ZDZCZU02U2lrVUQtT0tIdnA1cmlHNjRtSE02VXhlNUY5VHJXcXUzMDdDZmd6aGpXXzlRSFU3UlVhUU5icE9lUTdhZFVqTGt5YVdkUUM1YS0xUUhDQXFKRWN6c3c?oc=5",
+      "niche": "Police bodycam compilations",
+      "copyright": "medium",
+      "copyright_note": "Public footage hai, lekin transformative editing zaroori",
+      "country": "US"
+    },
+    {
+      "title": "Fort Hood attacker's execution by firing squad will be livestreamed, Pentagon says",
+      "source": "BBC",
+      "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE9pVlNqcnVNNU5mOGhxUE5iajdxU3psRmdDdWNEZTBGenRRT1AtTC1YcmVTbkpNTlF4SkhkY25RblUtWXlwMHlrM2RfZ2VTVUprQ183THdKTWpEb1k?oc=5",
+      "niche": "Other",
+      "copyright": "medium",
+      "copyright_note": "Source material ka license check karo",
+      "country": "US"
+    },
+    {
+      "title": "Rogers and El-Sayed trade attacks in combative first Michigan Senate debate",
+      "source": "AP News",
+      "link": "https://news.google.com/rss/articles/CBMingFBVV95cUxQdjAydXBMZXdCOUJLSG41X0g3LXJGd0ZzS2FlUEViREw3aFlQVlVsSVltX0N3aS1nYk1aZURoamdhZmdEZGY4VnNZMUdjNDcyTVJBd2paa1g2ckFZNHBZTllrR3ZYUHVQLTA2YXlibTRHTVFrc2YtN1RjcXk1b1pvSV93ekpEUXBtb1FKQnZGMlFCVjZyS1RKZ0l5am00QQ?oc=5",
+      "niche": "News/Current affairs",
+      "copyright": "medium",
+      "copyright_note": "Footage reuse nahi — apni reporting/voiceover banao",
+      "country": "US"
+    },
     {
       "title": "Hurricane Isaias live updates: Gulf Coast braces for dangerous storm",
       "source": "CNN",
@@ -11,99 +38,81 @@
       "country": "US"
     },
     {
-      "title": "Donald Trump’s Texas rally rocked by repeated protests",
-      "source": "The Guardian",
-      "link": "https://news.google.com/rss/articles/CBMiowFBVV95cUxNaGFlVHpmZnY0ZlZIVXhhWEpHVjBwT2VhelZMc1NkRkZCWU1rVXY1Q2p0YWlKYUcyS0EzS0FfcGpmekhYOTBIWUJwMi1rWVl0Qlp2NFRpMFpKaS1KZ1paQjVjVXB4YlZnb2xhYXRwUUxCZG9ZOGtTTnV5MkM2T0x4MU1oWDJlWWg0cXNiT09Cb2xsdFpiakFhZzR6N0NDRkMwejkw?oc=5",
+      "title": "Jon Ossoff Seizes on Mike Collins' Tariff Response",
+      "source": "Mediaite",
+      "link": "https://news.google.com/rss/articles/CBMi8gFBVV95cUxPUG02MU1OaktKemRGUXBLRVQ3eW9wNFA1eEJxcjc4S18wbjBja2ZXRnVSQ0hBTFk3c0V1c1J1dXBLV3daUl9JQW1JcFFGUFBxUkVjR2dJbG1kZzEyRlk1WlRNMVVoaFE5VEJDZjlDQUxtTGR6dnJ0aDdSZ0dlV1BIODZpOE1rTjJzZU56bVZTY1lnajBoVHlqTTRYTXN5WU9XZG1LUlY1N3A0NEdtUGI0bVBKYVNteG8waVpDMUdHWTRPRWVMNTJQbmhpcDhTd25UUy1NSzJnRjRER3RVZDhvdVJpb1Nfai1DUXBYYUlUSjJ3QQ?oc=5",
       "niche": "News/Current affairs",
       "copyright": "medium",
       "copyright_note": "Footage reuse nahi — apni reporting/voiceover banao",
       "country": "US"
     },
     {
-      "title": "Democrats spy a red-state opening. There may not be enough cash for it.",
-      "source": "Politico",
-      "link": "https://news.google.com/rss/articles/CBMinwFBVV95cUxOUlA5b3RhRlNydnpkRUlZNlpuTi1pVG1mVGJlWW9rZFVWWkt6azFQRXBvMXpoOXlrWFJab0k2b0dDYXJvMmplcTRKVU94Z2FtSXhfRk8xaDFsV05CNE1yRzl2Z1NCWjlwNGxCbGNZb09QcGt5R2N2b0Qwa0lGaEdzY0FqRFhXTFcxTVFVUkpMd292eGlMYms4cHpGYmZ1WGs?oc=5",
-      "niche": "News/Current affairs",
-      "copyright": "medium",
-      "copyright_note": "Footage reuse nahi — apni reporting/voiceover banao",
-      "country": "US"
-    },
-    {
-      "title": "Toss-ups, triage and targets: How to read the wide-open 2026 House map",
+      "title": "The long-deployed USS Lincoln returns home to San Diego Bay",
       "source": "NPR",
-      "link": "https://news.google.com/rss/articles/CBMiogFBVV95cUxPNFVVUHZiV0hQQ3RYdWJUMzhLMHo0NGVLek9Gc1pTNnBlbXZBWl9QMXVBS1l5Q20tMUxiU0VHMkQwOG0xQ3VZWFlJZlBBRV9iLW1Bdnk0N3hDQmdjcEV6a3lWekctX2dyREtrLVdLZnlHR3dWdkFXNXQxdElOeVozbG1vSG1kcGFzVDRrZHNLSUZoeU02Zy12QklMWU9NWW9jaEE?oc=5",
+      "link": "https://news.google.com/rss/articles/CBMipwFBVV95cUxOLVFUOC1MX3RNSUtocDVWdF9ycEd4QU1uUmljenNkMzhlTkw5TFE0NUQ4bkxGWFB4VUVETGx3dnhTRTZ0cUlrWHVpTks4X00tQjF5MWp3WktRanJMNXhLeGpMVlQwSUxxdlZpQmVEVFlobFVGV2kxZ2dLV0lXWXFZaGtrN0RodURxc2xDVXNWTHZnQlk1UXhoc1VEQVRlWUJlX1ZZWGt0Yw?oc=5",
       "niche": "Other",
       "copyright": "medium",
       "copyright_note": "Source material ka license check karo",
       "country": "US"
     },
     {
-      "title": "‘Maricarmen,’ Whose Eviction Enraged Spaniards, Dies at 87",
-      "source": "The New York Times",
-      "link": "https://news.google.com/rss/articles/CBMilAFBVV95cUxNVF9yWHg1N0tpdlhLWmtNQXI5YVZkVWpCTHRfQjYzQnFKYnFELTIwWmRXRW1RU3ZOMkU4RU90VzJ4ckY4bFBwS2phOTFWM0M5RmhxY0M0c3poUmJleDN2WUNzSExNbUpHNDgwVGNaLTlFTm5TNEhDRUI5RTBRU3JnbnR2QXM2Z1YyWDd2MVRldXlpN1c5?oc=5",
-      "niche": "Other",
-      "copyright": "medium",
-      "copyright_note": "Source material ka license check karo",
-      "country": "US"
-    },
-    {
-      "title": "Long-Deployed Aircraft Carrier U.S.S. Abraham Lincoln Set for Homecoming",
-      "source": "The New York Times",
-      "link": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPbTdrT2pHbVp5eGtTd3hySkxqak1VaEVtWEU5NlR6WjdHV0M0T2tBaXNNaG4xd3AtaDFIb1BtXzUtTWZhQ0tZZ3J5NFZaM0pseVhDbjI1cU5zYmhVdWxST3U5VTRhZnl5cF8xUlJsdThXelFlWk1mbFhMbk1PSDNSVDlITnpybUIx?oc=5",
-      "niche": "DIY/crafts",
-      "copyright": "low",
-      "copyright_note": "Khud ki video banao — 100% safe",
-      "country": "US"
-    },
-    {
-      "title": "Can Artificial Intelligence Learn the Art of Surgery?",
-      "source": "The New York Times",
-      "link": "https://news.google.com/rss/articles/CBMilgFBVV95cUxOZ0VmNlQ5UmFXQVB2b0pOYTZNV0RuaFZLVWZHR2dsTDV0OGZjUWVwV3ozTEhpWVE3M3d3ZDJTNmh5QUgtM2JTdldya0ZnUXZxekFPVzRYaVItMDM5dldDN0ZfQXlpYzQwbkFEeEZubHJ3WmhZeGVUQld1VVg2a0tBWUIzWHRzemJOSnM4WER5M1hwNlNSQVE?oc=5",
+      "title": "The Trump administration is suspending Microsoft from a green card program, alleging fraud",
+      "source": "AP News",
+      "link": "https://news.google.com/rss/articles/CBMilwFBVV95cUxOSlNGOUJHbkJ0UXdETE9EUWMySjZkMWVzX3V6Ny1yNlc1Ym4ydmx5NXY2UEJyak1mNVROdkRqOTNGY2kxT1BrQUwyYVRzSmlDNlVIa0xnenNUM2cyWjg2NTd0Rl9seW1JOVFuRHczVk93M2RkOWdDOUV0Sl90WjFJeEZEeWNTUFFvNkNkRU81alBOWlltQ1VN?oc=5",
       "niche": "Tech/AI news",
       "copyright": "medium",
       "copyright_note": "Clips reuse mat karo — apni voiceover banao",
       "country": "US"
     },
     {
-      "title": "Georgia Tech Announces New Online Master’s Degree in Artificial Intelligence",
-      "source": "Georgia Tech News Center",
-      "link": "https://news.google.com/rss/articles/CBMisgFBVV95cUxPcXRtclE5eHgxeG55N2gxTDlGbzI0d1EzTXVEOWRNSUxZRzdwb28wd1BaemhwY0JkRTBWcnV6Y3ZkTmRZZXhZeFd5ZmktUXZHdjNXT2NpeXpWSWlkUkhTYXJlOE5vYkdIbktpd29ocWZraFFGVm1ES3NwZWdNV0pEbjBEejNndjBKM29vajhWcWNsSnhsR0lRZTdmTF8yNnZxOWtmLTlGblA1cFhITEVuTXdn?oc=5",
+      "title": "At least 30 dead in Russian bus strike as Moscow closes in on Ukraine’s ‘fortress belt’",
+      "source": "The Washington Post",
+      "link": "https://news.google.com/rss/articles/CBMiugFBVV95cUxNazh5VndTZFZtUmdJejlzMFI4NmlaRl84dENCeDRqaXFxcWswYVhYRzJSaUhLc3M0a09aNUJ6eURnN05qbGRPSEJYc25RSXJYOEQzYjlac20yNFQzZ2dWNjZVdEp4RXNNOUhBaGpzZS15YlFyNVdUNkZxdUNzSXRPTG5WNWtCQTRYRjdpNVgzandVRjVmVGpPanJzZVo5VE5pd2dib0JXMEhESk5DZXV4Y0JmSVk4eXNjX2c?oc=5",
+      "niche": "True crime",
+      "copyright": "medium",
+      "copyright_note": "News clips par apni commentary add karo",
+      "country": "US"
+    },
+    {
+      "title": "Trump says anyone who does not refer to AI as ‘super intelligence’ is ‘THE ENEMY'",
+      "source": "Politico",
+      "link": "https://news.google.com/rss/articles/CBMijwFBVV95cUxNaTV1aTVjdklWRlVSRk44SVpZck9ENF9lWFAxSWVBMmNZQmktWDVZUC04Tmd1aUwwM01WLVJ3Sl93XzRaRTY3S3hvNm5UMFV0MXZiQk1VU0RIR3l4aVJLZHhlSjJ0ZWdHR3Y5YndyMmI2WG9CNnNibU02QS0tWEZhd2NDeG9YYWZqenV1MVpHNA?oc=5",
       "niche": "Tech/AI news",
       "copyright": "medium",
       "copyright_note": "Clips reuse mat karo — apni voiceover banao",
       "country": "US"
     },
     {
-      "title": "Bitcoin Falls as $550 Million in Risky Crypto Bets Wiped Out",
-      "source": "Yahoo Finance",
-      "link": "https://news.google.com/rss/articles/CBMinAFBVV95cUxOMnVOdElZSl9pSWhzUGhFM1pscjZRMF9MTDI0dTJqSU9JT09XOGp6RWo1MU16TFpBcU9hVDlOUjU4SUdRVXF6dm85MG9tenU3czAzN3V0MDBSS090UHp1cWN4ZDNmSzFPUkFLbzN6LXhaOTZwNUp3djRkVDFfUU5GMGxQZnN3M1daWi1fOUIxUm1VSFVtbzRadlBIeDc?oc=5",
+      "title": "Why Citrini favors stocks and crypto tokens over bitcoin (BTC) or ether (ETH) to bet on tokenization",
+      "source": "CoinDesk",
+      "link": "https://news.google.com/rss/articles/CBMi0wFBVV95cUxOb25zekhnRVotUXJOY2M3WTR6M1hGUExaazNrdl9ST2JEYWZJVFBIRXpDSHJyRHgya2txYjBaVV9RYm9NSmpibHNTelA4MWVVcFBGN2F2bHdFZ2hBSEQzT0RVZnJLZk1SRXMwM3MtZlNiaFg3ZDROcFZCdk9rSFZDa21lN05OaEpXbFI3Z0wxQ2dwbmhLSVBiUXVBQU8zSjRLdm5XS1EzMUw5czZieDdKblFxZHpSQV9Ra1czRTRycEdBSmc3NVc3bkM5czZ5NkJEODU0?oc=5",
       "niche": "Crypto",
       "copyright": "low",
       "copyright_note": "Apni analysis / screen recording safe hai",
       "country": "US"
     },
     {
-      "title": "Why some say Michigan should ban bitcoin ATMs as victims lose millions",
-      "source": "Detroit Free Press",
-      "link": "https://news.google.com/rss/articles/CBMi5gFBVV95cUxQS3FpZFdYanVZeGFRZ3owRk40cVZiNEs2Y3dCcUU3ZlZ4cXVMcU1YQmpTZExIVVQxQWdkbWo3dS0yR1FmYzM0VklLZnlBOHZCZkg0WW8xaTFCdUo3RXJyT3Q0NDZFWFNjNzRiLUhBNjB6VEEwSE5YallaUG5RUEZGdnZ4S3BhZWw1dFRacm9fRFRiZlpvczFRVUNKb1NlbHFTNkd4c2tzdWZNQlJMcHFGNWk1OEpRRlNnWmtVSGFMVzdPaXVtdlN6NjNSQXpZeFNJYXMwUWpwY0pNLWVXd0I5dkVfLUpFQQ?oc=5",
+      "title": "Bitcoin pulls back as analysts forecast $80,000-$90,000 Q4 trading range",
+      "source": "The Block",
+      "link": "https://news.google.com/rss/articles/CBMif0FVX3lxTFBHdVpUSzd3eUlwNm5aRGgxalJaRDVjVnNGVHUwMkF4VmcwTWpGUmZIczQycnVTZjlmWXZYdDhWT1BkYkFlbmFfd1VjYTVnVV8xd0VaYkZUU1NDbVBsRVc4UFVkMktub2EwaXdPaVh3WmJ5Rm8wakwwUVREWC16ZkE?oc=5",
       "niche": "Crypto",
       "copyright": "low",
       "copyright_note": "Apni analysis / screen recording safe hai",
       "country": "US"
     },
     {
-      "title": "Fantasy football matchup rankings: Upgrade D'Andre Swift, fade James Cook III",
+      "title": "College football Bottom 10 after Week 5: Michigan is back for more",
       "source": "ESPN",
-      "link": "https://news.google.com/rss/articles/CBMitAFBVV95cUxNRDFzTjJiYmdLUHVKRXJaVGROdGZ3dk1oRDlteXpGLTZBRXlfR2RtdGxvejZJR25ZNTVFR3U1TG5jdlpJZ0JOUnR2Q0RkeE83RHVNRnJWNFJORU5XcWtQVUZlcHVMTkFsUU5QRGtzVFBERTd1ZFVpbzZGNWlYSWRHTkFoZDkxanJPNXlVSjJJSExMb1pQUE5Nd1RXZDZNcWxaQ0FEX2VlM3VQOHNYZjl6QXBqV2g?oc=5",
+      "link": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxNazJSRzN5d2VvUVhWR3ljY3IyNjFmY29EVVFfanN6dXpuWEVNWjZEejZpVEZwT0VhT0x4YkdCV1A5OE9GSDljenBCV1BqbktSSlFhaWFhLWhUb09pcWFmRmllUFAwTWl4dndSMTcxX2ZiZktRTFhWWnNUbmZGWndfRy1mZUxicnNhYUl6UkFTWjZRRXdXSTBuemZYV2lOQURjTmszWGVWeWY?oc=5",
       "niche": "Sports highlights",
       "copyright": "high",
       "copyright_note": "Leagues/teams copyright strike deti hain",
       "country": "US"
     },
     {
-      "title": "College Football QB Power Rankings: Anthony Colandrea climbs ahead of big test vs. Indiana",
-      "source": "CBS Sports",
-      "link": "https://news.google.com/rss/articles/CBMiugFBVV95cUxNNjgtOHB0ckRLbXo4Vndfcl9jeDVFRDhFbHdVQlhZLTRuaFZqcjRwZVVERUZZeFpxWWRqZl9DNEFqZWRiTW9ISlhYQVlHWUFrdnJobFBwMkdyaGJuMXJOcnlQbG9sZllFTkMwQXpJcGNwdU8tcFpVakRxRzgxQW4tcXV6eVpiZUdFMmZwYzR6QjVMbHpBTzJhLTBmMHdZTHc0dzJ6VExxV3R6LUxYcnptbFhhcU8zM1BYRnc?oc=5",
+      "title": "Five important college football questions that will be answered after this weekend's slate | OutKick",
+      "source": "Fox News",
+      "link": "https://news.google.com/rss/articles/CBMirgFBVV95cUxQZldaX0ZUdkd5QWR4SnIwUzl4Mm1sOGJNejk5ZFNpV1dtRzB6cUxHc0R2YTE5SGhKcmt6UllfOUJnNGptSlRhdDNHMlZOd2U2N1o4TWJSOU9tVWVaVEZqeDB2Zk1sbDRnQm1Cb0RlZFNUeDdBYjloSk9GdF9HNW1ISVE4VVV6TTM0M1c2SExYZGtoMjM0MkJYMUVoRUljNXZKZ1pHVjNsUGpleFFNblE?oc=5",
       "niche": "Sports highlights",
       "copyright": "high",
       "copyright_note": "Leagues/teams copyright strike deti hain",
@@ -119,90 +128,90 @@
       "country": "US"
     },
     {
-      "title": "A missing flight. A little-known medical pipeline. Why many Bermudians come to Boston for health care.",
-      "source": "The Boston Globe",
-      "link": "https://news.google.com/rss/articles/CBMijgFBVV95cUxOdW8zUmNLMU5pWU9QVEtWdno2UnhCSVU4RUxVeU02U1dOWHlfSGVFSmM3Q3dGRlcyZzJVS3V5NlA4cThIeDZkZDlSaXpTeHEwLTlnblRoak9NdmwwLTFsbGVnU2wwOFlkX2xXNW45ZjMwaTZVam1GODBEVnNrLTllMzR5UmVMcVFiMFJWU0ZB?oc=5",
-      "niche": "True crime",
-      "copyright": "medium",
-      "copyright_note": "News clips par apni commentary add karo",
-      "country": "US"
-    },
-    {
-      "title": "Syracuse’s largest hospital-based behavioral health unit starts work on $25 million makeover",
-      "source": "Syracuse.com",
-      "link": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxNY0hac0ZnLWxuZGNYZE5TZTdhd2lXQU5Sc1BKeTFRZTJ4Vkg0NmNpSnkzOEhpeVM1Vkdsb2hsano2Q2NOTnJqRGluOURZeTBWN3hrbEw3MmJkNlZyUktOR0ZreVVPZ3Z0d3MtRDQ0SXNjX01QUWh6WjRJUmh6NmtSc0pvcmtDZ0VYZXp0Z3E3OXFyUjJvUHJCZEFRY1dCbXJIc0p5WjBnZExNQ1lFYTBPLVotdHFfVWFha1ZqTzJFaGk3bkhCY3JxRW8yR09mY1lE?oc=5",
+      "title": "China has nominated health official Song Li as WHO head",
+      "source": "Reuters",
+      "link": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxOYW45eWtYSTExd2RLMnhpTW5xYVk3WUJiTk9mRDc5T3dGUlZCMHNVMFluTUtjZ19KbnBOSThsc25KWFlpMUNTV0EwTEVSUEx6cG9hTjQ5eERfSjBKUDJrYzh2N2RlMEU1MC0zYW9FNkRUNmtnYTlILWMtV1VHX213c0xDcHNBeU9UOXhwQkxGbjY1emhUdkg5aWhsZW11WGY2TnN3LS01WkNCWS1fdElSVFhob3hxRmVOMEFOSTdVQm5PQQ?oc=5",
       "niche": "Health/Fitness",
       "copyright": "low",
       "copyright_note": "Apni voiceover + stock visuals safe hain",
       "country": "US"
     },
     {
-      "title": "NASA SpaceX Crew-12 flight latest news: Landing day nears for Dragon astronauts",
+      "title": "Denver health expert shares how oral health affects other issues",
+      "source": "CBS News",
+      "link": "https://news.google.com/rss/articles/CBMipwFBVV95cUxPalpIV2RkZC1yRG5meFhLaVIybXpLRko4aERmLVVVSjRNVzlxcmFMYmNVejM0TzdiTDBIdXduT2F1anktVURaVTBSQWMtQlkybDZvLU41Y3BpdDE2UThTeEprVjFxMG00aXVDRDlMTzd2SkpZUHU0R2ZhVWxSeUNEczg2UkJEbTk2NWFSQ0R4MmtJc1BFWjA0RlNNOGNpYmZRRUdIU2tJQQ?oc=5",
+      "niche": "Finance/money",
+      "copyright": "low",
+      "copyright_note": "Apni commentary / screen recording safe hai",
+      "country": "US"
+    },
+    {
+      "title": "4 people on NASA's Crew-12 mission return to Earth after 8 months in space",
+      "source": "NPR",
+      "link": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxNcl9qUkRWTGNpb3dJMDdMOXp5QWJIMGlFMmtrQUNPcGRlQmRoc0hBX0lEOWdqa1h3bExkLWZpMU9yeV8wbndqQlp0bkJ3TXZkdFFjSk42TUVSY1kzWm16Tm9ndUwwUlJyU2xnUjMxTzc1VDA4TmotOE5qWG4wSmwyZjFKN2xRUmVuXzIwdllvUGpmTlZHZnAtX1FqSnF0d1NkSFIxZUN6NnpvbVk?oc=5",
+      "niche": "Space",
+      "copyright": "low",
+      "copyright_note": "NASA/public-domain footage + apni voiceover",
+      "country": "US"
+    },
+    {
+      "title": "NASA's hunting for a secret underground cave on the moon",
       "source": "Space",
-      "link": "https://news.google.com/rss/articles/CBMikAFBVV95cUxPZ3BOMlIxbW5wU1pVQU41aUYyWlNGLXpQOXJ3OUY0YkFLamprR1Y4YTdjdktZdUVmdS1BdVR6MGdvXzA3OFkzV00ycGFTMWFTbE94NHVKa0FkQi1xcnNSS1AzNVczelFwdVNWUUx1WjZBMjUydFlEckZ4MV81enlMdThUSVN1Qks1TUU2MmQxYXg?oc=5",
+      "link": "https://news.google.com/rss/articles/CBMilwFBVV95cUxPTlVGaHlJT21jWkpUNEE2MktMdmlHeHlnU1YzNXZSZnVfc2FUTlNGaTRHQldzQWdvWHlKRGVGbkxXUlJWeUxaTVh2czJFbGszMVFVUmVtTlBTNnppc3d0T1BSeDgwdFVQRFpidTdReWJ6ZDQ1eHlUN2MwUnBmQTdJQzRsRnNKZTJCcVVDbldMbUVObmVfQWln?oc=5",
       "niche": "Space",
       "copyright": "low",
       "copyright_note": "NASA/public-domain footage + apni voiceover",
       "country": "US"
     },
     {
-      "title": "NASA Releases Artemis II Lunar Science Data, Images",
-      "source": "NASA (.gov)",
-      "link": "https://news.google.com/rss/articles/CBMinwFBVV95cUxOTEdKUkZ3VkhsYzFNTk9GWlRZZHoySmZQeTJXMk9TV2NNSWM1YkE3V194Um5YNnFpdDR5eUtCdXRLRlhoOHVZaVFJSTJYSDVrWkt1QjZTMjIydnd6anV0X2JIOGVEX1NVb29SQ0l6Z0dsV3d5LVN3TVdGMGRqd2tTWjhHdDQtd2ttMDVZRlhUbi1FRkNqMWVuc2hNSjBuU0k?oc=5",
-      "niche": "Space",
-      "copyright": "low",
-      "copyright_note": "NASA/public-domain footage + apni voiceover",
-      "country": "US"
-    },
-    {
-      "title": "Aaron Sorkin on why he made another movie about Facebook, and how real life translates to film",
-      "source": "Reuters",
-      "link": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxNT0lzNXN6LTl2Y1NnWFN0b2Z0VGNmSjlXXzFBX19tWkF0OXRzTVpiR3lELXI4TC1DNjF5d0xZTEdNMklZNm9tclZwYkRzZVdQMFQ5aXpzRlRfOFcxNC1QVzdkRDBtRHlVcHpUNHVfTWhvVGROOExDZEVnSkFuYnlMZFI3NDdVX3dXdzZRd0dYdFIwY3dJcEljZ2lZM0h3WGNRa0wyOGlncVFSdkp5WlJLTEctSTA5MGhwUURqRzh1LVhEa0E?oc=5",
+      "title": "‘Other Mommy’ Rotten Tomatoes Reviews Rip Jessica Chastain’s New Horror Movie",
+      "source": "Forbes",
+      "link": "https://news.google.com/rss/articles/CBMixAFBVV95cUxOcW5ubWpabjZHTExjaUJqaTY0SzEzNW5fQ0N2bHdBOXVCMUprOGtDTmtZTGstNENnckpqcElQRDB5dlNSczJqV3hreGNuRTRCNFp0TWpSTU50RXpJNldqb09Fdll1Z3FIQWFMVE16UFhHTC1laEJZaGR0b0h0SXVrdUlrZU9oRnpsQXBHQ2ZGejhSaDdTN0ZBQUtzZFlrbGtaa25LdW1HRUxIQ0JQTDgtQ1laUG40alI4YmNYd2NhT3N2RV9f?oc=5",
       "niche": "Entertainment/Celebrity",
       "copyright": "medium",
       "copyright_note": "Celebrity clips par apni commentary add karo",
       "country": "US"
     },
     {
-      "title": "Why Mark Zuckerberg Is a Mere Supporting Character in the New Facebook Movie",
-      "source": "WSJ",
-      "link": "https://news.google.com/rss/articles/CBMipAFBVV95cUxQOXBmNGF5MFRnc0JCZ2ZvczItMHVGU1JORzlzSTdiZEl1SUgxbGl4THY1MDlmYjAzNlZJb09pd1pzTXB5RDlzUkZBTGR6U3BlWHlGZzNwalB2aFZFdERoY0Zhc1NhRndwQi1Ma2dZb1YtMF9SaFEwUjZGSlBxdlRGTnI0N21rV2VYREcyVE9qVjZWcDZfRzFiYVI1ZmlXMkJvOFRWcw?oc=5",
+      "title": "Rooster Teeth Founders Matt Hullum and Burnie Burns Reunite for Christmas Horror Movie ‘Bad Toys’ (EXCLUSIVE)",
+      "source": "Variety",
+      "link": "https://news.google.com/rss/articles/CBMiogFBVV95cUxON1JLb2o0VjBUMllxTDJ1aFAtUXZSbTdRYnQ3WlN4WERCTHhFZEJPQVgzMkN2T0kzVWt2MWxHV3M2U255MjVNRzl0T1VWMTJnc2ZBVy00V1gxbnJRb2phaGlOY05OaEJEakdIMjFYa21sR3hIRjUxUm5OOWpEOUdKSVI4VC1oVFVwWXVfRlhTUTBXTHZLdUR6UFhaTVA1ZWpaQnc?oc=5",
       "niche": "Entertainment/Celebrity",
       "copyright": "medium",
       "copyright_note": "Celebrity clips par apni commentary add karo",
       "country": "US"
     },
     {
-      "title": "Real Estate Mogul Ryan Serhant Launches Chicago Expansion of Rapidly Growing Brokerage",
-      "source": "Realtor.com",
-      "link": "https://news.google.com/rss/articles/CBMijAFBVV95cUxQSDhQdDVKQjJ0TkprTTl0VVlVc084YXdQSlUtNURKU0F5NDJzVkNvYWJ6ekF1bmQ2S08tUjlxb0d5MkVjcjh4Sm50aG5IWVQzRWFwRGExTFE4QkViQnZRZC1fWXJiTUlRc2RpY1hUT0VCV1o3VGctaFN0WGN3b2xOV0lvVlYtc1lwNXd6Zw?oc=5",
+      "title": "Fifth Wall’s Brendan Wallace On Spotting Real Estate’s Next Hot Tech Early",
+      "source": "Commercial Observer",
+      "link": "https://news.google.com/rss/articles/CBMigwFBVV95cUxQempwTUFtMkxJVFlWUWc1Zm1NN0FxQlQ1UlFLbG1fbS1hTlRaWjUwV25VQlB6Z05pYWl4Z1hNOEpnV2lTNFN2NTJoOExPU0EzbVlZaDNXVC1oX2JCREtsZ21zem8tcW11bFNqRXhwZmlueTE0cEtWMHVOZlBzYldSdEpVTQ?oc=5",
       "niche": "Real Estate",
       "copyright": "low",
       "copyright_note": "Apni commentary / khud ki footage",
       "country": "US"
     },
     {
-      "title": "Unemployment benefit claims dipped slightly last week as layoffs remain low",
-      "source": "Channel 3000",
-      "link": "https://news.google.com/rss/articles/CBMi7wFBVV95cUxPUmhSTi1IM0c3ZVFscXhzbkZBNG5oSzZKRmliM2RkMS02WlhDcV9kX1h2N3FpV1YtclJsUXZiSlpxazQ5aXd1WHl3X0V5Qm1uT0Ffb1RaeG5QdU1wV1Q5ZjBjTUtPUno4Q2xrVXRkc2VoemI1SV9wU2tTLU5WV0FZQjd4LUlMVWZWZ0x6Ym5RTXctWDR2RFhqMGQ0WVVpdlh0OENBMm91NXBwNGNUTThEbG8xOU1aOHV2QXRZbzVmOFJHUEs0WXhkajhsck9Ua1FvZDNONmc0N3Z5M3FzS1RWcHY5VFdSUExXMFVuOUdGQQ?oc=5",
+      "title": "Will surging mortgage rates cool San Francisco’s real estate boom?",
+      "source": "San Francisco Chronicle",
+      "link": "https://news.google.com/rss/articles/CBMinwFBVV95cUxNY0pEZ19KY2FXcDZiVTdGVVRrRGJtNVoydWU3Sko2X0xBX1JlQ3RoT2s0ZW0wLU9pTExFTFZuVnZHUGRIM2NMUkp1RzI1dmpsemlrZlpnU2o1UDZhVmgzdjlzVW1ZTUZvZmEwRW4xWUJKUmJxM0Q3WHFfTkJmTUJMSXlONGpPM0FWNGtrb242THhuVTJLaFJTR01XdTNRd1U?oc=5",
+      "niche": "Real Estate",
+      "copyright": "low",
+      "copyright_note": "Apni commentary / khud ki footage",
+      "country": "US"
+    },
+    {
+      "title": "Rockford woman admits to $2M pandemic unemployment fraud scheme",
+      "source": "WIFR",
+      "link": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxQa1BubUFhbmFOSDJZWmY3cjFxT09LTXItYUR3bFJQSnR5N2pmUjRVazZPSkxTV0xnc191WE45Q3AxOGVfNktvU1lSZlNzRWx6OEtmZGh2RE9jc3pMRDdFWG13cDdwMjlCaTJpcWJnaXlVTzh0aU5YZURuaHhSNS1MbHZqcHQ5cjFLR3FlamMtWTAwd2RqZ2NZNEcyeXJLb1gwcjJvUy1pdnU?oc=5",
       "niche": "Jobs/Career",
       "copyright": "low",
       "copyright_note": "Apni advice videos safe hain",
       "country": "US"
     },
     {
-      "title": "US weekly jobless claims fall as layoffs remain low",
-      "source": "KELO-AM",
-      "link": "https://news.google.com/rss/articles/CBMiigFBVV95cUxPaWhJZXBrMU1TYzVwYjBMQWZtd1k5U0Zoa1Znc1FSLThPNDc5MnJMaHZuVlFMYng5clVNaUZUMnowRnViSk8xNE9faEJILXdJQTBfb0pnd2lxOFJMV2hlOEh3RTM0eXVZcFRhcllZcGxtRk9ZTXlUZUx0Wl93S2E0MF9JMm9WMWEyTnc?oc=5",
-      "niche": "Jobs/Career",
-      "copyright": "low",
-      "copyright_note": "Apni advice videos safe hain",
-      "country": "US"
-    },
-    {
-      "title": "China's Golden Week reveals cautious consumer spending despite travel surge",
-      "source": "DW.com",
-      "link": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxONVRRd1FlWGJCV3lsbHdJQ1FDWVpBcXpqd0hNd1NhVTlKVW5ja1JXOUVZb2RaSVdnU0NWNV9ta0g3QWVBZlZCN0hITG5nRHZoZHNLVWRhYS1FZnNPMTdVckYxOThlYTdVXzZtMEt0TkZRRGhSVldzUThaYnR1ZTFQYWVZU0RZS3NpUTFjal9HZG16UFU1N0plRlBiWEFMX3p6cDIyNU5sSjBEQkHSAasBQVVfeXFMTjdYQnVpcWlTbVVqODV4cHpyN1hQTkk5dVdORDJTVFhEbkRhc0hTTW14bVB6ZFAtYTRQdVJGel95amdVdXYwVjhzbGd5RkRwQVFLYlZlMUI0TnV3cUtacHhVeVZQd1dwbFVUMHM2ZEtnX2tJSlJseF84N1B5QkgwVjM3SG1fanVOX3BhcUNhRHdCV0IzdE1FUG14X0I0d3VBb25vTTZVMFc5NmVZ?oc=5",
+      "title": "Japan's tourist spending windfall shrinks as Chinese visitors plunge",
+      "source": "Nikkei Asia",
+      "link": "https://news.google.com/rss/articles/CBMitwFBVV95cUxQbUNJMm9aQ2xpVTNFMWpOdHdrQ0dseDQxOTV6RFFJRUhFeWc4eFd5VVhyRVZUbWhBeVBNMmdxanNJRG9VX2NDSGlDUnhZSXNBcUkyVWx1MGItUFkzbGxTZE54ZTJWZGxHUFRVdjIxQ29EZElia3c5U3pteU9RLUg2eTVHRkFzTUZvcFpBUGVEb0Q2SDFFQV9rR0d2cDZlS2t2R1gzVUU1RlYzaUthVGxrTHlzejZfek0?oc=5",
       "niche": "Travel/Tourism",
       "copyright": "low",
       "copyright_note": "Khud ki footage sab se best",
@@ -218,18 +227,9 @@
       "country": "US"
     },
     {
-      "title": "Stock market today: Dow, S&P 500, Nasdaq futures fall as oil rises, reviving inflation worries",
+      "title": "Stock market today: Oil rises, Nasdaq leads Dow, S&P 500 lower as chip stocks sell off",
       "source": "Yahoo Finance",
       "link": "https://news.google.com/rss/articles/CBMirgFBVV95cUxPN1hvWl9DMFlrdWI3MDJRYjRqb2hyeTI1eWVDSTBucWpWb2xRNTVFdk5PY0pHMWcxQ3djT2hkOHRpNks2cmEwQU5hT1F5SklzN1hTMi1maUJpN0pIaE9iaWlFS3BqcU9IbXRqYnBwaHR2NnF6Ujl1TVhKb2tzVmdRZUVHUmY0WWY3STZYLWcwaXpvQjlNTXhTbmQxdWV3Z3ZKNXcyNjgxaXVPeUdscXc?oc=5",
-      "niche": "Finance/money",
-      "copyright": "low",
-      "copyright_note": "Apni commentary / screen recording safe hai",
-      "country": "US"
-    },
-    {
-      "title": "Stock Market Today: Oil Rises, Dow Futures Slide After Fresh Tanker Attack — Live Updates",
-      "source": "WSJ",
-      "link": "https://news.google.com/rss/articles/CBMihwFBVV95cUxPRXZ4MHZha2h5MTVsV0UxVGxlcFFqZ1lvWUk3VkNxbkd3RHVRNXRRVGZfbVItMXRJa3VTbUhDa1lUM0llR0Y0eVFBRFBoSVNSMjhNR3VmNGNfVndmWm9RNnFhR2MtU20wS015RV91QmFGQ0o2LTVmRGxvX1ZRdm9Wa1Y0SXQyN0U?oc=5",
       "niche": "Finance/money",
       "copyright": "low",
       "copyright_note": "Apni commentary / screen recording safe hai",
@@ -299,37 +299,37 @@
       "country": "US"
     },
     {
-      "title": "Usher in fall with 3 new cookie recipes",
-      "source": "Star Tribune",
-      "link": "https://news.google.com/rss/articles/CBMigwFBVV95cUxQQTYzRUhRejZoRXFfQ05FV3Q4RjNLWGxuTlFPeG0tcXV2cS0yWnlkUi1pdXFmcmk5QURNTXl0MVBodVpqbFVZSldVRTVtSmxCR2d4U25GeG5BQ3dIZHduejJsVXZLT1UxeFFxb1ZFRENUcHJ3NEZMSHVJZFdKZWtpTnRubw?oc=5",
-      "niche": "Cooking/food",
-      "copyright": "low",
-      "copyright_note": "Khud ki video banao — 100% safe",
-      "country": "US"
-    },
-    {
-      "title": "Patriots vs. Raiders series history ahead of Week 5",
-      "source": "Yahoo Sports",
-      "link": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxOb19QYWVFSGhxUVR3Tno0YjZuaEFDaFp2WFhKaEk2VzA3Q1pXNXVkQTJsdkpNZVh0dWNzRThqeTZiT1R4LWlwSjZ3MXVhZFZDOEoyZVhQaFlLSGxFNUhIbV92LVc3T21SNGN0UUFWOFY4ckRidzRQNXMzTFhKZWQ5cXR5OXpRVVBpZzU4?oc=5",
+      "title": "Quiz: Can You Name These 16 Figures From History?",
+      "source": "The New York Times",
+      "link": "https://news.google.com/rss/articles/CBMigwFBVV95cUxQdUtiMU5oX3dUUHJUYkVsZDRSQ2d2VG92aXo4YUZZQUdKU0l2dllUQ2xzZ0ROWWxLbm9ySWtJUkxuYTJIejR3LXE5Nmw3R0ZpejIwbVMxSGEtWUVNRldPV01CbHFCc2x5VHlJTU9nQjdPa0xrN3FnNHNENGRPcFpoTkEyZw?oc=5",
       "niche": "History",
       "copyright": "medium",
       "copyright_note": "Apni narration + public-domain footage use karo",
       "country": "US"
     },
     {
-      "title": "Planet of the apes: the ‘bizarre’ and tortured history of monkeys and humans",
+      "title": "The woman with the mattress: the radical, rage-fuelled history of anti-rape art",
       "source": "The Guardian",
-      "link": "https://news.google.com/rss/articles/CBMimwFBVV95cUxPeHF6b2RBRy1zVC1JMEtnbmJKbW8wZWZ2X1FWbERsUGI3ZFF6N3VuNExOeTctWlE0VFltXzY0d1NWalBKUDlNUk1GUmVsc3lGbUdGaHhXTkw0ZDZ1d2lTdjE3eHRFRkVpc3htVUI1RzQ0UXJoR2szMHZLV0c4MjRVMGFOd2EtRlFjX1RScEFwRjVYR3l6R1BTN3pEUQ?oc=5",
+      "link": "https://news.google.com/rss/articles/CBMipgFBVV95cUxPUWxSUkNmT1BBc19pb2Q1RnY2OEs2ekxSMmQ2bG5YSk1zRjdwS0ROZktwRXJGQy1ZQjRQd1VuTnh4aHF3Q094czlpRVdUZC0taW1aLUVlT0ZIU2xmTHV3dVR6NTloeUFlaWZoclZmSHBtdDZSNG5ienQxdDl1V2pZY2p4VzZnMUlWb1FmeldKUWFfeVlrMEZFZ1hYeGllYWhfQS1NU1h3?oc=5",
       "niche": "History",
       "copyright": "medium",
       "copyright_note": "Apni narration + public-domain footage use karo",
+      "country": "US"
+    },
+    {
+      "title": "Build students’ intercultural competence in online classrooms",
+      "source": "Times Higher Education",
+      "link": "https://news.google.com/rss/articles/CBMiowFBVV95cUxOajRrZlFSMGtkdDZPMkdESEhGQk5HQ2V2em1vS0V2U1ZqcXIxalBpN2VYNVQtbUpmNHAzQldzRnN0SHQwbU9WbEtlWXEzYTBEbThIallsU2NuYnVDa0RFMDloSklVelhySlJqV2pveUtjcW5rLTdWNHMybktKWHd5RVBzaXNjamR0RDhwNDdLYWhPQnlUVkNnWEZZZFJyR1YxeFpv?oc=5",
+      "niche": "Education",
+      "copyright": "low",
+      "copyright_note": "Original explainers 100% safe",
       "country": "US"
     }
   ],
   "niches": [
     "Cooking/food",
     "Crypto",
-    "DIY/crafts",
+    "Education",
     "Entertainment/Celebrity",
     "Environment/Climate",
     "Finance/money",
@@ -340,6 +340,7 @@
     "Mindset/motivation",
     "Nature/wildlife",
     "News/Current affairs",
+    "Police bodycam compilations",
     "Real Estate",
     "Space",
     "Sports highlights",
