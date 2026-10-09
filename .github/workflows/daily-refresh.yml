@@ -1,4 +1,4 @@
-name: Daily trends refresh
+name: Daily YouTube gap refresh
 on:
   schedule:
     - cron: '30 4 * * *'  # roz subah ~04:30 UTC
@@ -13,9 +13,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Refresh trends
-        run: python3 update_trends.py
-      - name: Refresh YouTube gaps
+      - name: Refresh YouTube gaps (shorts + new accounts)
         env:
           YT_API_KEY: ${{ secrets.YT_API_KEY }}
         run: python3 youtube_gap.py || true
@@ -23,6 +21,6 @@ jobs:
         run: |
           git config user.name "trend-bot"
           git config user.email "trend-bot@users.noreply.github.com"
-          git add data/trends_*.json data/yt_gap_*.json
-          git diff --cached --quiet || git commit -m "daily trends refresh $(date -u +%F)"
+          git add data/yt_gap_*.json
+          git diff --cached --quiet || git commit -m "daily youtube gap refresh $(date -u +%F)"
           git push
