@@ -15,6 +15,7 @@ gracefully empty likhta hai.
 ya channel naya (<120 din) lekin views zyada -> ⚡.
 """
 import json, os, re, sys, time, urllib.request, urllib.parse
+from collections import Counter, defaultdict
 from datetime import date, datetime, timedelta, timezone
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -25,8 +26,8 @@ DATA = os.path.join(BASE, "data")
 os.makedirs(DATA, exist_ok=True)
 
 API = "https://www.googleapis.com/youtube/v3"
-REGIONS = ["US", "DE", "GB", "PK"]
-REGION_NAMES = {"US": "🇺🇸 USA", "DE": "🇩🇪 Germany", "GB": "🇬🇧 UK", "PK": "🇵🇰 Pakistan"}
+REGIONS = ["US", "DE", "GB", "FR"]
+REGION_NAMES = {"US": "🇺🇸 USA", "DE": "🇩🇪 Germany", "GB": "🇬🇧 UK", "FR": "🇫🇷 France"}
 
 # ---------- format detection ----------
 FORMAT_KEYWORDS = [
@@ -77,6 +78,11 @@ TIKTOK_SATURATED = {
     "Scandals/Drama": ["Shorts / vertical clip", "Talking head / podcast"],
     "Cam footage": ["Compilation", "Shorts / vertical clip"],
     "Lifestyle": ["Shorts / vertical clip", "Vlog / day in life"],
+    "AI storytime": ["AI narration", "Shorts / vertical clip"],
+    "Outdoor cooking": ["Shorts / vertical clip", "Tutorial / how-to"],
+    "Royal family": ["Shorts / vertical clip"],
+    "American life": ["Shorts / vertical clip", "Vlog / day in life"],
+    "Rural life": ["Shorts / vertical clip", "Vlog / day in life"],
 }
 
 # YouTube ki official category -> niche (keyword na mile to fallback)
@@ -106,10 +112,12 @@ def gap_assess(niche, fmt):
     return ("format_gap", "🟡 Format gap",
             f"Niche TikTok par hai, lekin '{fmt}' format wahan naya lagta hai")
 
-# ---------- content filters (amir's rules) ----------
-# Dance / adult content kabhi nahi; purane mega channels nahi (sirf rising stars)
+# ---------- content filters (amir's rules: halal only, no artists) ----------
+# Dance / adult / alcohol kabhi nahi; purane mega channels nahi (sirf rising stars)
 EXCLUDE_TITLE = ["dance", "dancing", "twerk", "nude", "naked", "porn",
-                 "onlyfans", "xxx", "brazzers"]
+                 "onlyfans", "xxx", "brazzers", "whiskey", "whisky", "alcohol",
+                 "vodka", "cocktail", "bikini", "lingerie", "strip club",
+                 "official music video", "beer challenge", "drunk"]
 MEGA_SUBS = 5_000_000      # is se zyada subs...
 MEGA_AGE_DAYS = 730        # ...aur 2 saal se purana channel = exclude
 
@@ -117,15 +125,18 @@ def title_excluded(title):
     t = (title or "").lower()
     return any(k in t for k in EXCLUDE_TITLE)
 
-# region -> search language (US/UK/DE English majority, PK local mix)
-SEARCH_LANG = {"US": "en", "DE": "en", "GB": "en", "PK": None}
-# US/GB/DE: trending chart global hota hai -> sirf English search (viral-in-30d)
-# PK: local mix ke liye trending bhi rakho
-USE_TRENDING = {"US": False, "GB": False, "DE": False, "PK": True}
+def artist_excluded(title, channel):
+    # kisi artist ka original account nahi
+    return "vevo" in (channel or "").lower()
+
+# region -> search language (US/UK/DE/FR English majority)
+SEARCH_LANG = {"US": "en", "DE": "en", "GB": "en", "FR": "en"}
+# US/GB/DE/FR: trending chart global hota hai -> sirf English search (viral-in-30d)
+USE_TRENDING = {"US": False, "GB": False, "DE": False, "FR": False}
 SEARCH_QUERIES = {"US": ["shorts", "viral shorts"], "GB": ["shorts", "viral shorts"],
-                  "DE": ["shorts", "viral shorts"], "PK": ["shorts"]}
-# YouTube ki audio-language metadata se filter (US/GB: English, DE: German/English)
-AUDIO_ALLOW = {"US": ("en",), "GB": ("en",), "DE": ("de", "en"), "PK": None}
+                  "DE": ["shorts", "viral shorts"], "FR": ["shorts", "viral shorts"]}
+# YouTube ki audio-language metadata se filter (English; DE: +German)
+AUDIO_ALLOW = {"US": ("en",), "GB": ("en",), "DE": ("de", "en"), "FR": ("en",)}
 
 def audio_ok(sn, region):
     allow = AUDIO_ALLOW.get(region)
@@ -273,7 +284,9 @@ def build_region(key, region):
         if not latin_ok(title, region):
             continue  # US/GB/DE: non-Latin script titles nahi
         if not lang_ok(title, region):
-            continue  # US/GB/DE: English majority scoring
+            continue  # US/GB/DE/FR: English majority scoring
+        if artist_excluded(title, sn.get("channelTitle", "")):
+            continue  # kisi artist ka original account nahi
         ch = ch_info.get(sn.get("channelId"), {})
         ch_sn = ch.get("snippet", {})
         ch_st = ch.get("statistics", {})
@@ -316,7 +329,37 @@ def build_region(key, region):
     # gaps first, phir 30-din viral, phir views
     order = {"niche_gap": 0, "format_gap": 1, "saturated": 2}
     out.sort(key=lambda x: (order[x["gap"]], not x["viral_30d"], -x["views"]))
-    return out[:25]
+    videos = out[:25]
+    # ---- NEW ACCOUNTS aggregation (same criteria: naye, halal, no artists) ----
+    ch_groups = defaultdict(list)
+    for v in out:
+        ch_groups[v["channel_id"]].append(v)
+    channels = []
+    for cid, vs in ch_groups.items():
+        v0 = max(vs, key=lambda x: x["views"])
+        age = v0["channel_age_days"]
+        if age is None or age > 90:
+            continue  # 90 din se purana account nahi
+        gaps = [v["gap"] for v in vs]
+        best = "niche_gap" if "niche_gap" in gaps else ("format_gap" if "format_gap" in gaps else "saturated")
+        if best == "saturated":
+            continue  # pehle se TikTok par hai to nahi chahiye
+        top_niche = Counter(v["niche"] for v in vs).most_common(1)[0][0]
+        total_views = sum(v["views"] for v in vs)
+        channels.append({
+            "channel_id": cid, "channel": v0["channel"],
+            "channel_url": v0["channel_url"],
+            "subs": v0["subs"], "subs_fmt": v0["subs_fmt"],
+            "channel_age_days": age, "is_new": age <= 60,
+            "videos": len(vs), "total_views": total_views,
+            "total_views_fmt": fmt_views(total_views),
+            "niche": top_niche, "gap": best,
+            "gap_label": "🟢 Niche gap" if best == "niche_gap" else "🟡 Format gap",
+            "top_video_url": v0["video_url"], "top_video_title": v0["title"],
+            "region": region,
+        })
+    channels.sort(key=lambda x: (0 if x["is_new"] else 1, -x["total_views"]))
+    return videos, channels[:25]
 
 def main():
     key = os.environ.get("YT_API_KEY", "").strip()
@@ -327,14 +370,15 @@ def main():
         return
     for region in REGIONS:
         try:
-            items = build_region(key, region)
+            videos, channels = build_region(key, region)
         except Exception as e:
             print(f"[{region}] fail: {e}", flush=True)
-            items = []
-        gaps = sum(1 for i in items if i["gap"] != "saturated")
+            videos, channels = [], []
+        gaps = sum(1 for i in videos if i["gap"] != "saturated")
         with open(os.path.join(DATA, f"yt_gap_{region}.json"), "w", encoding="utf-8") as f:
-            json.dump({"date": today, "region": region, "items": items}, f, ensure_ascii=False, indent=2)
-        print(f"[{region}] {len(items)} videos, {gaps} gap opportunities", flush=True)
+            json.dump({"date": today, "region": region, "items": videos,
+                       "channels": channels}, f, ensure_ascii=False, indent=2)
+        print(f"[{region}] {len(videos)} videos, {len(channels)} new channels, {gaps} gap opportunities", flush=True)
 
 if __name__ == "__main__":
     main()
